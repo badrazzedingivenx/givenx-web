@@ -15,6 +15,19 @@ import img7 from './assets/7.png';
 import img8 from './assets/8.png';
 import img9 from './assets/9.png';
 import img10 from './assets/10.png';
+import probBg from './assets/prob.jfif';
+import auditBg from './assets/audit.jfif';
+import strategieBg from './assets/strategie.jfif';
+import devBg from './assets/dev.jfif';
+import supportBg from './assets/support.jfif';
+import imgEcommerce from './assets/e-commerce.png';
+import imgEducation from './assets/education.png';
+import imgFinance from './assets/finance.png';
+import imgIndustrie from './assets/industrie.png';
+import imgLogistique from './assets/logistique.png';
+import imgOng from './assets/ONG.png';
+import imgPme from './assets/pme.png';
+import imgStartups from './assets/startups.png';
 
 const industriesData = [
   { name: "PME/PMI", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> },
@@ -224,19 +237,40 @@ const faqData = [
   }
 ];
 
-const solutionsRow1 = [
-  { name: "Digital Products", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path></svg> },
-  { name: "Logos", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg> },
-  { name: "Landing Pages", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> },
-  { name: "Websites", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="7" x2="22" y2="7"></line></svg> }
+const approachSteps = [
+  { number: "1", title: "Problème", subtitle: "Comprendre vos défis", bg: probBg },
+  { number: "2", title: "Audit", subtitle: "Analyser vos systèmes", bg: auditBg },
+  { number: "3", title: "Stratégie", subtitle: "Concevoir la solution", bg: strategieBg },
+  { number: "4", title: "Implémentation", subtitle: "Développer et déployer", bg: devBg },
+  { number: "5", title: "Support", subtitle: "Maintenir et améliorer", bg: supportBg }
 ];
 
-const solutionsRow2 = [
-  { name: "Pitch Decks", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> },
-  { name: "Mobile Apps", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> },
-  { name: "Email Design", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> },
-  { name: "Product Design", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> },
-  { name: "Social Media", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg> }
+const approachBenefits = [
+  {
+    title: "Solutions Sur Mesure",
+    desc: "Chaque projet est unique. Nous concevons des solutions adaptées à vos besoins spécifiques."
+  },
+  {
+    title: "Sécurité Avant Tout",
+    desc: "La sécurité est intégrée dès la conception dans tous nos projets."
+  },
+  {
+    title: "Performance Optimale",
+    desc: "Des systèmes rapides, fiables et scalables pour soutenir votre croissance."
+  },
+  {
+    title: "Expertise Technique",
+    desc: "Une équipe d'ingénieurs expérimentés maîtrisant les technologies de pointe."
+  }
+];
+
+const valuesData = [
+  { title: "Innovation", desc: "Nous repoussons les limites de la technologie." },
+  { title: "Sécurité", desc: "La protection des données est notre priorité." },
+  { title: "Excellence", desc: "Nous visons la perfection dans chaque projet." },
+  { title: "Transparence", desc: "Communication claire et honnête à chaque étape." },
+  { title: "Performance", desc: "Des résultats mesurables et un impact réel." },
+  { title: "Orientation Client", desc: "Votre succès est notre objectif principal." }
 ];
 
 function App() {
@@ -244,6 +278,7 @@ function App() {
   const [isIndustriesVisible, setIsIndustriesVisible] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const industriesRef = useRef(null);
+  const industriesCarouselRef = useRef(null);
 
   const [testimonials, setTestimonials] = useState(testimonialsData);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
@@ -251,13 +286,34 @@ function App() {
   const [isContactAlertOpen, setIsContactAlertOpen] = useState(false);
   const [newReview, setNewReview] = useState({ name: '', role: '', company: '', text: '', rating: 5 });
 
+  const industriesCarouselImages = [
+    { src: imgPme, alt: 'PME/PMI' },
+    { src: imgStartups, alt: 'Startups' },
+    { src: imgEcommerce, alt: 'E-commerce' },
+    { src: imgFinance, alt: 'Finance' },
+    { src: imgLogistique, alt: 'Logistique' },
+    { src: imgIndustrie, alt: 'Industrie' },
+    { src: imgEducation, alt: 'Education' },
+    { src: imgOng, alt: 'ONG / secteur public' },
+  ];
+
   const handleReviewSubmit = (e) => {
     e.preventDefault();
-    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    const name = newReview.name.trim();
+    const role = newReview.role.trim();
+    const company = newReview.company.trim();
+    const textRaw = newReview.text.trim();
+
+    if (!name || !role || !company || !textRaw) return;
+
+    const randomColor = Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0');
     const review = {
       ...newReview,
-      text: `“${newReview.text}”`,
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${newReview.name}&backgroundColor=${randomColor}`
+      name,
+      role,
+      company,
+      text: `“${textRaw.replace(/^“|”$/g, '')}”`,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}&backgroundColor=${randomColor}`
     };
     setTestimonials([review, ...testimonials]);
     setIsReviewOpen(false);
@@ -302,6 +358,28 @@ function App() {
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const el = industriesCarouselRef.current;
+    if (!el) return;
+
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (prefersReducedMotion) return;
+
+    const interval = setInterval(() => {
+      const slideWidth = el.querySelector('.industries-slide')?.getBoundingClientRect()?.width ?? 0;
+      if (!slideWidth) return;
+
+      const maxScrollLeft = el.scrollWidth - el.clientWidth;
+      const next = el.scrollLeft + slideWidth + 18;
+      el.scrollTo({
+        left: next >= maxScrollLeft - 2 ? 0 : next,
+        behavior: 'smooth',
+      });
+    }, 2800);
+
+    return () => clearInterval(interval);
   }, []);
 
   const toggleFaq = (index) => {
@@ -425,22 +503,36 @@ function App() {
         className={`industries-section ${isIndustriesVisible ? 'in-view' : ''}`}
         ref={industriesRef}
       >
-        <div className="status-badge" style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.08)', color: '#A0A0A0', marginBottom: '1.5rem' }}>
-          <span className="status-dot" style={{ backgroundColor: '#D3D3D3', boxShadow: 'none', animation: 'none' }}></span>
-          Secteurs d'activité
-        </div>
-        <h2 className="industries-title">Les industries que nous servons</h2>
-        <p className="industries-subtitle">Notre expertise s'étend sur de multiples secteurs pour accélérer votre croissance</p>
-
-        <div className="industries-grid">
-          {industriesData.map((industry, index) => (
-            <div className="industry-card" key={index} style={{ transitionDelay: `${index * 100}ms` }}>
-              <div className="industry-icon-wrapper">
-                {industry.icon}
-              </div>
-              <h3 className="industry-name">{industry.name}</h3>
+        <div className="industries-split">
+          <div className="industries-left">
+            <div className="industries-badge">
+              <span className="industries-badge-dot" aria-hidden="true"></span>
+              Secteurs d'activité
             </div>
-          ))}
+            <h2 className="industries-title">
+              <span className="industries-title-script">Les industries</span>
+              <span className="industries-title-bold">que nous servons</span>
+            </h2>
+            <p className="industries-subtitle">
+              Notre expertise s'étend sur de multiples secteurs pour accélérer votre croissance
+            </p>
+          </div>
+
+          <div className="industries-right">
+            <div className="industries-right-panel">
+              <div className="industries-showcase">
+                <div className="industries-carousel" ref={industriesCarouselRef} aria-label="Industries showcase">
+                  {[...industriesCarouselImages, ...industriesCarouselImages].map((item, index) => (
+                    <div className="industries-slide" key={`${item.alt}-${index}`}>
+                      <div className="industries-slide-frame">
+                        <img className="industries-slide-img" src={item.src} alt={item.alt} loading="lazy" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -493,68 +585,80 @@ function App() {
 
       {/* Features Section */}
       <section id="features" className="features-section">
-        <div className="status-badge" style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.08)', color: '#A0A0A0', marginBottom: '2rem' }}>
-          <span className="status-dot" style={{ backgroundColor: '#D3D3D3', boxShadow: 'none', animation: 'none' }}></span>
-          Features
-        </div>
-
-        <h2 className="features-title">
-          Raisons pour lesquelles <span className="text-dim">vous allez nous aimer.</span>
-        </h2>
-
-        <p className="features-subtitle">
-          Une fois que vous essayez Givnex Group, vous n'irez nulle part ailleurs pour le design. Sérieusement.
-        </p>
-
-        <div className="features-grid">
-          {featuresInfoData.map((feature, index) => (
-            <div className="feature-item" key={index}>
-              <div className="feature-icon">
-                {feature.icon}
-              </div>
-              <h3 className="feature-item-title">{feature.title}</h3>
-              <p className="feature-item-desc">{feature.desc}</p>
+        <h2 className="mission-vision-section-title">Pourquoi nous</h2>
+        <div className="mission-vision-layout">
+          <div className="mission-vision-left">
+            <div className="mission-card">
+              <h3>Notre Mission</h3>
+              <p>
+                Permettre aux entreprises de toutes tailles d'accéder à des solutions
+                technologiques de pointe, sécurisées et performantes pour accélérer leur croissance.
+              </p>
             </div>
-          ))}
+
+            <div className="mission-card">
+              <h3>Notre Vision</h3>
+              <p>
+                Devenir le partenaire technologique de référence pour les entreprises qui
+                veulent innover, se transformer et prospérer dans l'ère digitale.
+              </p>
+            </div>
+          </div>
+
+          <div className="mission-vision-right">
+            <div className="values-visual-panel">
+              <h3 className="values-visual-title">Nos Valeurs</h3>
+              <div className="values-visual-grid">
+                {valuesData.map((value) => (
+                  <div className="values-visual-card" key={value.title}>
+                    <span className="values-visual-icon">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="12 2 15 9 22 9 16.5 13.5 18.5 21 12 16.8 5.5 21 7.5 13.5 2 9 9 9"></polygon>
+                      </svg>
+                    </span>
+                    <h4>{value.title}</h4>
+                    <p>{value.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Solutions / Marquee Section */}
       <section className="solutions-section">
-        <div className="status-badge solution-badge">
-          <span className="status-dot" style={{ backgroundColor: '#D3D3D3', boxShadow: 'none', animation: 'none' }}></span>
-          Solution
+        <h2 className="approach-title">Notre Approche</h2>
+
+        <div className="approach-steps-row">
+          {approachSteps.map((step) => (
+            <div className="approach-step-card" key={step.number}>
+              <img src={step.bg} alt={step.title} className="approach-step-bg" />
+              <div className="approach-step-overlay"></div>
+              <div className="approach-step-content">
+                <div className="approach-step-number">{step.number}</div>
+                <h3 className="approach-step-title">{step.title}</h3>
+                <p className="approach-step-subtitle">{step.subtitle}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
-        <h2 className="solutions-title">
-          Tous vos besoins <span className="text-dim">en matière de design.</span>
-        </h2>
-
-        <p className="solutions-subtitle">
-          Diriger une entreprise prospère signifie plus qu'avoir simplement un site web. C'est pourquoi nous couvrons tous vos besoins en matière de design, afin que vous n'ayez pas à aller ailleurs.
-        </p>
-
-        <div className="solution-marquee-wrapper">
-          <div className="marquee-container">
-            <div className="marquee-track scroll-left fast-scroll">
-              {[...solutionsRow1, ...solutionsRow1, ...solutionsRow1, ...solutionsRow1].map((item, index) => (
-                <div className="solution-pill" key={index}>
-                  {item.icon}
-                  <span>{item.name}</span>
-                </div>
-              ))}
+        <div className="approach-benefits-grid">
+          {approachBenefits.map((benefit) => (
+            <div className="approach-benefit-item" key={benefit.title}>
+              <div className="approach-benefit-head">
+                <span className="approach-check-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="m8.5 12 2.2 2.2 4.8-4.8"></path>
+                  </svg>
+                </span>
+                <h4>{benefit.title}</h4>
+              </div>
+              <p>{benefit.desc}</p>
             </div>
-          </div>
-          <div className="marquee-container" style={{ marginTop: '1rem' }}>
-            <div className="marquee-track scroll-right fast-scroll">
-              {[...solutionsRow2, ...solutionsRow2, ...solutionsRow2, ...solutionsRow2].map((item, index) => (
-                <div className="solution-pill" key={index}>
-                  {item.icon}
-                  <span>{item.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -646,99 +750,117 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="contact-section">
-        <div className="contact-container">
-          <div className="contact-info-wrapper">
-            <h2 className="contact-title">Contactez-nous</h2>
-            <p className="contact-subtitle">Prêt à démarrer votre projet ? Remplissez le formulaire et nous vous contacterons rapidement.</p>
+      <section id="contact" className="contact-section-new">
+        <div className="contact-header-new">
+          <div className="contact-title-container">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#628193"><polygon points="20 4 4 12 20 20"></polygon></svg>
+            <h2 className="contact-main-title">NOUS CONTACTER</h2>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#628193"><polygon points="4 4 20 12 4 20"></polygon></svg>
+          </div>
+          <div className="contact-dashed-line"></div>
+        </div>
 
-            <form className="contact-form" onSubmit={handleContactSubmit}>
-              <div className="form-group">
-                <label className="form-label">Nom complet</label>
-                <input type="text" className="form-input" placeholder="Votre nom complet" required />
+        <div className="contact-layout-wrapper">
+          {/* Left Form Panel */}
+          <div className="form-panel-custom">
+            <form className="contact-form-minimal" onSubmit={handleContactSubmit}>
+              <div className="form-field-wrapper">
+                <label className="minimal-label">Nom complet</label>
+                <input type="text" className="minimal-input" required />
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Email</label>
-                <input type="email" className="form-input" placeholder="votre@email.com" required />
+              <div className="form-field-wrapper">
+                <label className="minimal-label">E-mail</label>
+                <input type="email" className="minimal-input" required />
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label className="form-label">Entreprise</label>
-                  <input type="text" className="form-input" placeholder="Nom de votre entreprise" required />
+              <div className="form-field-row">
+                <div className="form-field-wrapper form-field-wrapper--half">
+                  <label className="minimal-label">Entreprise</label>
+                  <input type="text" className="minimal-input" required />
                 </div>
-                <div className="form-group">
-                  <label className="form-label">Secteur</label>
-                  <select className="form-select" defaultValue="" required>
-                    <option value="" disabled>Sélectionnez un secteur</option>
-                    <option value="tech">Technologie / IT</option>
-                    <option value="finance">Finance / Assurance</option>
-                    <option value="sante">Santé</option>
-                    <option value="education">Éducation / Formation</option>
-                    <option value="ecommerce">E-commerce / Retail</option>
-                    <option value="logistique">Logistique / Transport</option>
-                    <option value="industrie">Industrie</option>
-                    <option value="autre">Autre</option>
-                  </select>
+                <div className="form-field-wrapper form-field-wrapper--half">
+                  <label className="minimal-label">Secteur</label>
+                  <input type="text" className="minimal-input" required />
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Message</label>
-                <textarea className="form-textarea" placeholder="Comment pouvons-nous vous aider ?" required></textarea>
+              <div className="form-field-wrapper message-wrapper">
+                <label className="minimal-label">Message</label>
+                <textarea className="minimal-textarea" required></textarea>
               </div>
 
-              <button type="submit" className="btn-submit">
-                Envoyer le message
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '8px' }}><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              <button type="submit" className="minimal-submit-btn">
+                ENVOYER LE MESSAGE
               </button>
             </form>
+        
+        
           </div>
 
-          <div className="contact-map-wrapper">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3324.9666874838634!2d-7.643445524675704!3d33.55428614385966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d2df26c11b01%3A0x6b637996c5aa32a5!2sTechnopark!5e0!3m2!1sfr!2sma!4v1703666249764!5m2!1sfr!2sma"
-              className="contact-map"
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Maps Technopark Casablanca"
-            ></iframe>
+          {/* Right Info Panel */}
+          <div className="info-overlapping-panel">
+            <div className="decor-slate-circle"></div>
+            
+            <div className="info-box-pill">
+               NOTRE BUREAU
+            </div>
+            
+            <div className="info-box-content">
+               <p className="info-sub-text">
+                  Retrouvez-nous dans nos locaux pour discuter de vos projets en personne.
+               </p>
+               <p className="info-sub-text">
+                  Nous sommes ravis d'accompagner votre transformation.
+               </p>
+               
+               <div className="info-map-embed">
+                  <iframe
+                    title="Technopark Casablanca"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3324.0!2d-7.6567!3d33.5897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d282b8d77ca1%3A0x4c07aa8765b27db5!2sTechnopark%20Casablanca!5e0!3m2!1sfr!2sma!4v1680000000000"
+                    width="100%"
+                    height="220"
+                    style={{ border: 0, borderRadius: '12px', display: 'block' }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+               </div>
+               
+              
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer Section */}
       <footer className="footer-section">
+        <div className="footer-watermark" aria-hidden="true">GivenX Tech</div>
+
         <div className="footer-main">
-          <div className="footer-left-pane">
-            <img src={logoTech2} alt="GivenX Group" className="footer-logo-img" />
-            <p className="footer-desc">Votre partenaire technologique de confiance.</p>
+          <div className="footer-top-row">
+            <div className="footer-socials-top">
+              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="footer-social-top-icon" aria-label="LinkedIn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                  <rect x="2" y="9" width="4" height="12"></rect>
+                  <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+              </a>
+              <a href="https://x.com" target="_blank" rel="noreferrer" className="footer-social-top-icon" aria-label="Twitter">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 12 7.5v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                </svg>
+              </a>
+            </div>
+            <div className="footer-top-line" aria-hidden="true"></div>
           </div>
 
-          <div className="footer-right-pane">
-            <div className="footer-col">
-              <h4 className="footer-col-title">Get in touch</h4>
-              <ul className="footer-menu">
-                <li><a href="mailto:contact@givenxtech.com">contact@givenxtech.com</a></li>
-                <li><a href="tel:+212600000000">+212 600 000 000</a></li>
-                <li><span className="footer-text">Casablanca, Maroc</span></li>
-              </ul>
-              <div className="footer-socials-mini">
-                <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="footer-social-icon" aria-label="LinkedIn">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </a>
-                <a href="https://x.com" target="_blank" rel="noreferrer" className="footer-social-icon" aria-label="Twitter">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 12 7.5v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                  </svg>
-                </a>
-              </div>
+          <div className="footer-grid">
+            <div className="footer-brand">
+              <img src={logoTech2} alt="GivenX Group" className="footer-logo-img" />
+              <p className="footer-desc">Votre partenaire technologique de confiance.</p>
+              <a href="#contact" className="footer-cta-btn">Contact us</a>
             </div>
 
             <div className="footer-col">
@@ -748,6 +870,15 @@ function App() {
                 <li><a href="#industries">Industries</a></li>
                 <li><a href="#features">Pourquoi nous</a></li>
                 <li><a href="#contact">Contact</a></li>
+              </ul>
+            </div>
+
+            <div className="footer-col">
+              <h4 className="footer-col-title">Get in touch</h4>
+              <ul className="footer-menu">
+                <li><a href="mailto:contact@givenxtech.com">contact@givenxtech.com</a></li>
+                <li><a href="tel:+212600000000">+212 600 000 000</a></li>
+                <li><span className="footer-text">Casablanca, Maroc</span></li>
               </ul>
             </div>
           </div>
@@ -826,7 +957,7 @@ function App() {
       {/* Success Alert Modal */}
       {isAlertOpen && (
         <div className="modal-overlay form-animation-overlay" onClick={() => setIsAlertOpen(false)} style={{ zIndex: 1001 }}>
-          <div className="modal-content form-animation-content" style={{ textAlign: 'center', maxWidth: '400px' }} onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content form-animation-content confirm-modal" style={{ textAlign: 'center', maxWidth: '400px' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', color: '#10B981' }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
             </div>
@@ -844,7 +975,7 @@ function App() {
       {/* Contact Success Alert Modal */}
       {isContactAlertOpen && (
         <div className="modal-overlay form-animation-overlay" onClick={() => setIsContactAlertOpen(false)} style={{ zIndex: 1001 }}>
-          <div className="modal-content form-animation-content" style={{ textAlign: 'center', maxWidth: '400px' }} onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content form-animation-content confirm-modal" style={{ textAlign: 'center', maxWidth: '400px' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(26, 216, 232, 0.1)', border: '1px solid rgba(26, 216, 232, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', color: '#1AD8E8' }}>
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </div>
