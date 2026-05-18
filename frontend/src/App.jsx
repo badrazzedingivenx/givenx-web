@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import ContactPage from './ContactPage';
 import './index.css';
-import fileBg from './assets/file.png';
 import xBg from './assets/X.png';
 import videoBg from './assets/Futuristic interface.mp4';
 import ctaVideoBg from './assets/Abstract Blue Liquid Fluid.mp4';
@@ -27,7 +28,14 @@ import imgIndustrie from './assets/industrie.png';
 import imgLogistique from './assets/logistique.png';
 import imgOng from './assets/ONG.png';
 import imgPme from './assets/pme.png';
+import collaborationImg from './assets/collaboration.jpg';
+import burjImg from './assets/burj-khalifa.jpg';
 import imgStartups from './assets/startups.png';
+import imgAbout from './assets/Gemini_Photoroom.png';
+import CardSwap, { Card } from './CardSwap';
+import TrueFocus from './TrueFocus';
+import FloatingLines from './FloatingLines';
+
 
 const industriesData = [
   { name: "PME/PMI", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> },
@@ -115,6 +123,14 @@ const testimonialsData = [
     role: "Founder",
     company: "GreenLeaf Enterprises",
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David&backgroundColor=b6e3f4"
+  },
+  {
+    rating: 5,
+    text: "“Un accompagnement sur-mesure et une équipe à l'écoute de nos moindres exigences.”",
+    name: "Sophie Dupont",
+    role: "CTO",
+    company: "TechNova",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie&backgroundColor=ffdfbf"
   }
 ];
 
@@ -273,12 +289,26 @@ const valuesData = [
   { title: "Orientation Client", desc: "Votre succès est notre objectif principal." }
 ];
 
-function App() {
+function MainLanding() {
   const [activeFaq, setActiveFaq] = useState(null);
   const [isIndustriesVisible, setIsIndustriesVisible] = useState(false);
+  const [isServicesVisible, setIsServicesVisible] = useState(false);
+  const [isFeaturesVisible, setIsFeaturesVisible] = useState(false);
+  const [isApproachVisible, setIsApproachVisible] = useState(false);
+  const [isHeroVideoVisible, setIsHeroVideoVisible] = useState(false);
+  const [isCtaVisible, setIsCtaVisible] = useState(false);
+  const [isStatsVisible, setIsStatsVisible] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const industriesRef = useRef(null);
-  const industriesCarouselRef = useRef(null);
+  const servicesRef = useRef(null);
+  const featuresRef = useRef(null);
+  const approachRef = useRef(null);
+  const heroVideoRef = useRef(null);
+  const ctaRef = useRef(null);
+  const statsRef = useRef(null);
 
   const [testimonials, setTestimonials] = useState(testimonialsData);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
@@ -286,6 +316,69 @@ function App() {
   const [isContactAlertOpen, setIsContactAlertOpen] = useState(false);
   const [newReview, setNewReview] = useState({ name: '', role: '', company: '', text: '', rating: 5 });
 
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    sector: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleContactFormSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        setFormData({ name: '', email: '', company: '', sector: '', message: '' });
+      }, 5000);
+    }, 1500);
+  };
+
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  const [isTestimonialsVisible, setIsTestimonialsVisible] = useState(false);
+  const testimonialsRef = useRef(null);
+
+  useEffect(() => {
+    if (testimonials.length <= 3) return;
+    const interval = setInterval(() => {
+      setCurrentTestimonialIndex((prev) => (prev + 1) % testimonials.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setIsTestimonialsVisible(true);
+      } else {
+        setIsTestimonialsVisible(false);
+      }
+    }, { threshold: 0.3 });
+
+    if (testimonialsRef.current) {
+      observer.observe(testimonialsRef.current);
+    }
+    return () => {
+      if (testimonialsRef.current) {
+        observer.unobserve(testimonialsRef.current);
+      }
+    };
+  }, []);
+
+  const getVisibleTestimonials = () => {
+    if (testimonials.length <= 3) return testimonials;
+    const visible = [];
+    for (let i = 0; i < 3; i++) {
+      visible.push(testimonials[(currentTestimonialIndex + i) % testimonials.length]);
+    }
+    return visible;
+  };
   const industriesCarouselImages = [
     { src: imgPme, alt: 'PME/PMI' },
     { src: imgStartups, alt: 'Startups' },
@@ -342,9 +435,93 @@ function App() {
       observer.observe(industriesRef.current);
     }
 
+    const servicesObserver = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        setIsServicesVisible(true);
+      }
+    }, { threshold: 0.1 });
+
+    if (servicesRef.current) {
+      servicesObserver.observe(servicesRef.current);
+    }
+
+    const featuresObserver = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        setIsFeaturesVisible(true);
+      }
+    }, { threshold: 0.1 });
+
+    if (featuresRef.current) {
+      featuresObserver.observe(featuresRef.current);
+    }
+
+    const approachObserver = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        setIsApproachVisible(true);
+      }
+    }, { threshold: 0.1 });
+
+    if (approachRef.current) {
+      approachObserver.observe(approachRef.current);
+    }
+
+    const heroVideoObserver = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        setIsHeroVideoVisible(true);
+      }
+    }, { threshold: 0.1 });
+
+    if (heroVideoRef.current) {
+      heroVideoObserver.observe(heroVideoRef.current);
+    }
+
+    const ctaObserver = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        setIsCtaVisible(true);
+      }
+    }, { threshold: 0.1 });
+
+    if (ctaRef.current) {
+      ctaObserver.observe(ctaRef.current);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        setIsStatsVisible(true);
+      }
+    }, { threshold: 0.1 });
+
+    if (statsRef.current) {
+      statsObserver.observe(statsRef.current);
+    }
+
     return () => {
       if (industriesRef.current) {
         observer.unobserve(industriesRef.current);
+      }
+      if (servicesRef.current) {
+        servicesObserver.unobserve(servicesRef.current);
+      }
+      if (featuresRef.current) {
+        featuresObserver.unobserve(featuresRef.current);
+      }
+      if (approachRef.current) {
+        approachObserver.unobserve(approachRef.current);
+      }
+      if (heroVideoRef.current) {
+        heroVideoObserver.unobserve(heroVideoRef.current);
+      }
+      if (ctaRef.current) {
+        ctaObserver.unobserve(ctaRef.current);
+      }
+      if (statsRef.current) {
+        statsObserver.unobserve(statsRef.current);
       }
     };
   }, []);
@@ -352,34 +529,19 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 500);
+      setScrollY(window.scrollY);
     };
 
     window.addEventListener('scroll', handleScroll);
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
 
-  useEffect(() => {
-    const el = industriesCarouselRef.current;
-    if (!el) return;
-
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-    if (prefersReducedMotion) return;
-
-    const interval = setInterval(() => {
-      const slideWidth = el.querySelector('.industries-slide')?.getBoundingClientRect()?.width ?? 0;
-      if (!slideWidth) return;
-
-      const maxScrollLeft = el.scrollWidth - el.clientWidth;
-      const next = el.scrollLeft + slideWidth + 18;
-      el.scrollTo({
-        left: next >= maxScrollLeft - 2 ? 0 : next,
-        behavior: 'smooth',
-      });
-    }, 2800);
-
-    return () => clearInterval(interval);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const toggleFaq = (index) => {
@@ -392,24 +554,59 @@ function App() {
 
   return (
     <div className="page-wrapper">
-      {/* Navigation Bar - Made Sticky/Fixed in CSS */}
-      <nav className="navbar">
-        <div className="logo-section">
-          <img src={logoTech2} alt="GivenX Tech" className="header-logo-img" />
+      {/* Navigation Bar - Hides after scrolling past hero */}
+      <nav className={`navbar ${scrollY > 600 ? 'navbar-hidden' : ''} ${mobileMenuOpen ? 'navbar-menu-open' : ''}`}>
+        <div className="navbar-top-row">
+          <div className="logo-section">
+            <img src={logoTech2} alt="GivenX Tech" className="header-logo-img" />
+          </div>
+          <ul className="nav-links nav-links-desktop">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#industries">Industries</a></li>
+            <li><a href="#features">Pourquoi Nous</a></li>
+          </ul>
+          <Link to="/contact" className="btn-contact btn-contact-desktop">Contactez-nous</Link>
+          <button
+            className={`hamburger-btn ${mobileMenuOpen ? 'hamburger-active' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+          </button>
         </div>
-        <ul className="nav-links">
-          <li><a href="#accueil">Accueil</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#industries">Industries</a></li>
-          <li><a href="#features">Pourquoi Nous</a></li>
-        </ul>
-        <a href="#contact" className="btn-contact">Contactez-nous</a>
+        {/* Mobile Menu Drawer */}
+        <div className={`mobile-menu-drawer ${mobileMenuOpen ? 'mobile-menu-open' : ''}`}>
+          <ul className="mobile-nav-links">
+            <li><a href="#accueil" onClick={() => setMobileMenuOpen(false)}>Accueil</a></li>
+            <li><a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a></li>
+            <li><a href="#industries" onClick={() => setMobileMenuOpen(false)}>Industries</a></li>
+            <li><a href="#features" onClick={() => setMobileMenuOpen(false)}>Pourquoi Nous</a></li>
+          </ul>
+          <Link to="/contact" className="btn-contact mobile-btn-contact" onClick={() => setMobileMenuOpen(false)}>Contactez-nous</Link>
+        </div>
       </nav>
 
       {/* Hero Section */}
       <div id="accueil" className="main-container">
         {/* Background Images */}
-        <img src={fileBg} className="bg-image file-bg" alt="" />
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: -1, pointerEvents: 'auto' }}>
+          <FloatingLines
+            enabledWaves={["top", "middle", "bottom"]}
+            lineCount={12}
+            lineDistance={10}
+            bendRadius={10}
+            bendStrength={5}
+            interactive
+            parallax={true}
+            parallaxStrength={0.8}
+            animationSpeed={1}
+            linesGradient={["#00d4ff", "#007bff", "#003366"]}
+          />
+        </div>
+
         <img src={xBg} className="bg-image x-bg" alt="" />
 
         <main className="hero-section">
@@ -435,33 +632,41 @@ function App() {
       </div>
 
       {/* Video Section */}
-      <section className="video-section">
+      <section className={`video-section ${isHeroVideoVisible ? 'in-view' : ''}`} ref={heroVideoRef}>
         <video className="bg-video" autoPlay loop muted playsInline>
           <source src={videoBg} type="video/mp4" />
         </video>
-        <div className="video-overlay">
-          <img src={logoTech2} alt="GivenX Tech Large" className="big-logo" />
+        {/* Scanner Corners */}
+
+
+        <div className={`video-overlay-hud ${isHeroVideoVisible ? 'anim-slide-up' : ''}`}>
+          <div className="hud-center">
+            {/* Rotating HUD Ring */}
+
+            <h2 className="hud-title">GivenX</h2>
+            <p className="hud-subtitle">Tech</p>
+          </div>
         </div>
       </section>
       {/* Services Section */}
-      <section id="services" className="services-section">
+      <section id="services" className={`services-section ${isServicesVisible ? 'in-view' : ''}`} ref={servicesRef}>
         {/* Geometric Background Shapes matching design */}
         <div className="bg-glow-container">
           <div className="bg-shape bg-shape-left"></div>
           <div className="bg-shape bg-shape-right"></div>
         </div>
 
-        <div className="status-badge" style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.08)', color: '#A0A0A0', marginBottom: '1.5rem' }}>
+        <div className={`status-badge ${isServicesVisible ? 'anim-slide-up' : ''}`} style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.08)', color: '#A0A0A0', marginBottom: '1.5rem', animationDelay: '0.1s' }}>
           <span className="status-dot" style={{ backgroundColor: '#D3D3D3', boxShadow: 'none', animation: 'none' }}></span>
           Fonctionnalités
         </div>
 
-        <h2 className="services-title">Nos Services</h2>
-        <p className="services-subtitle">Des solutions complètes pour votre transformation digitale</p>
+        <h2 className={`services-title ${isServicesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.2s' }}>Nos Services</h2>
+        <p className={`services-subtitle ${isServicesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.3s' }}>Des solutions complètes pour votre transformation digitale</p>
 
         <div className="services-grid">
           {servicesData.map((service, index) => (
-            <div className="service-card" key={index}>
+            <div className={`service-card ${isServicesVisible ? 'anim-slide-up' : ''}`} key={index} style={{ animationDelay: `${0.4 + index * 0.1}s` }}>
               <div className="service-header">
                 <div className={`service-icon-wrapper ${service.iconClass}`}>
                   {service.icon}
@@ -492,7 +697,7 @@ function App() {
           </div>
         </div>
 
-        <p className="clients-subtitle">(Pourquoi les clients aiment Givenx Tech)</p>
+
       </section>
 
 
@@ -503,201 +708,544 @@ function App() {
         className={`industries-section ${isIndustriesVisible ? 'in-view' : ''}`}
         ref={industriesRef}
       >
-        <div className="industries-split">
+        <div className="industries-split" style={{
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
+          boxShadow: '0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
+          borderRadius: '24px',
+          position: 'relative',
+          overflow: 'hidden',
+          zIndex: 1
+        }}>
+          {/* Background glowing orbs spread across the whole merged div */}
+          <div style={{
+            position: 'absolute',
+            top: '-10%',
+            left: '-10%',
+            width: '400px',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(163, 100, 255, 0.15) 0%, transparent 70%)',
+            filter: 'blur(50px)',
+            zIndex: -1
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            bottom: '-20%',
+            right: '-10%',
+            width: '400px',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(26, 216, 232, 0.15) 0%, transparent 70%)',
+            filter: 'blur(50px)',
+            zIndex: -1
+          }}></div>
+
           <div className="industries-left">
-            <div className="industries-badge">
-              <span className="industries-badge-dot" aria-hidden="true"></span>
-              Secteurs d'activité
+            <div className={`${isIndustriesVisible ? 'anim-slide-up' : ''}`} style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '8px 16px',
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '30px',
+              width: 'fit-content',
+              marginBottom: '2rem',
+              backdropFilter: 'blur(10px)',
+              animationDelay: '0.1s'
+            }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#A364FF', boxShadow: '0 0 12px #A364FF' }}></span>
+              <span style={{ color: '#E0E0E0', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase' }}>Secteurs d'activité</span>
             </div>
-            <h2 className="industries-title">
-              <span className="industries-title-script">Les industries</span>
-              <span className="industries-title-bold">que nous servons</span>
-            </h2>
-            <p className="industries-subtitle">
-              Notre expertise s'étend sur de multiples secteurs pour accélérer votre croissance
+
+            <div className={`${isIndustriesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.2s' }}>
+              <TrueFocus
+                sentence={"Les\u00A0industries que nous servons"}
+                manualMode={false}
+                blurAmount={5}
+                borderColor="#1AD8E8"
+                glowColor="rgba(26, 216, 232, 0.6)"
+                animationDuration={0.5}
+                pauseBetweenAnimations={1}
+              />
+            </div>
+
+            <p className={`${isIndustriesVisible ? 'anim-slide-up' : ''}`} style={{
+              color: 'rgba(255,255,255,0.6)',
+              fontSize: '1.15rem',
+              lineHeight: 1.7,
+              maxWidth: '700px',
+              margin: 0,
+              fontWeight: 400,
+              animationDelay: '0.3s'
+            }}>
+              Notre expertise s'étend sur de multiples secteurs pour accélérer votre croissance grâce à des solutions technologiques intelligentes et sur mesure.
             </p>
+
+            {/* Futuristic accent line */}
+            <div style={{
+              marginTop: '3rem',
+              width: '80px',
+              height: '3px',
+              background: 'linear-gradient(90deg, #1AD8E8, transparent)',
+              borderRadius: '2px'
+            }}></div>
           </div>
 
-          <div className="industries-right">
-            <div className="industries-right-panel">
-              <div className="industries-showcase">
-                <div className="industries-carousel" ref={industriesCarouselRef} aria-label="Industries showcase">
-                  {[...industriesCarouselImages, ...industriesCarouselImages].map((item, index) => (
-                    <div className="industries-slide" key={`${item.alt}-${index}`}>
-                      <div className="industries-slide-frame">
-                        <img className="industries-slide-img" src={item.src} alt={item.alt} loading="lazy" />
+          <div className={`industries-right ${isIndustriesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.4s' }}>
+            <CardSwap
+              cardDistance={windowWidth < 768 ? 30 : 60}
+              verticalDistance={windowWidth < 768 ? 40 : 70}
+              delay={3000}
+              pauseOnHover={false}
+              width={windowWidth < 480 ? 280 : windowWidth < 768 ? 400 : 550}
+              height={windowWidth < 480 ? 250 : windowWidth < 768 ? 350 : 500}
+            >
+              {industriesCarouselImages.map((ind, idx) => {
+                const icons = [
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>,
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>,
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
+                ];
+                return (
+                  <Card key={idx} style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    padding: 0,
+                    background: '#000',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    overflow: 'hidden',
+                    width: '104%',
+                    height: '90%',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.6)'
+                  }}>
+                    {/* Top Header */}
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '12px 16px',
+                      background: '#0d0d0d',
+                      borderBottom: '1px solid rgba(255,255,255,0.1)',
+                      gap: '10px'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#e0e0e0' }}>
+                        {icons[idx % 3]}
                       </div>
+                      <span style={{ color: '#e0e0e0', fontSize: '0.95rem', fontWeight: 500, letterSpacing: '0.3px' }}>
+                        {ind.alt}
+                      </span>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+
+                    {/* Image Content */}
+                    <div style={{ flex: 1, position: 'relative', overflow: 'hidden', background: '#050505' }}>
+                      <img src={ind.src} alt={ind.alt} style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }} />
+                    </div>
+                  </Card>
+                );
+              })}
+            </CardSwap>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="testimonials-section">
-        <div className="status-badge" style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.08)', color: '#A0A0A0', marginBottom: '2rem' }}>
-          <span className="status-dot" style={{ backgroundColor: '#D3D3D3', boxShadow: 'none', animation: 'none' }}></span>
-          Témoignage
-        </div>
-
-        <h2 className="testimonials-title">
-          Avis des clients sur <span className="text-dim">Travail, Utilisabilité et Conception.</span>
-        </h2>
-
-        <p className="testimonials-subtitle">
-          Écoutez nos clients satisfaits ! Découvrez comment nous les avons aidés à atteindre leurs objectifs et à créer un impact durable.
-        </p>
-
-        <div style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'center' }}>
-          <button className="btn-contact" onClick={() => setIsReviewOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', border: 'none', cursor: 'pointer' }}>
-            Ajouter un avis
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          </button>
-        </div>
-
-        <div className="testimonials-grid">
-          {testimonials.map((testimonial, index) => (
-            <div className="testimonial-card" key={index}>
-              <div className="testimonial-avatar-wrapper">
-                <img src={testimonial.avatar} alt={testimonial.name} className="testimonial-avatar" />
-              </div>
-              <div className="testimonial-stars">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <svg key={i} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                ))}
-              </div>
-              <p className="testimonial-text">{testimonial.text}</p>
-              <div className="testimonial-footer">
-                <div className="testimonial-author">
-                  <span className="testimonial-name">{testimonial.name}</span>
-                  <span className="testimonial-separator">•</span>
-                  <span className="testimonial-role">{testimonial.role}</span>
+      <section className="testimonials-section chat-layout-section" ref={testimonialsRef}>
+        
+        <div className={`chat-layout-grid ${isTestimonialsVisible ? 'is-visible' : ''}`}>
+          {/* Left Column: Chat Bubbles */}
+          <div className="chat-bubbles-column">
+            {getVisibleTestimonials().map((testimonial, index) => (
+              <div
+                className={`chat-bubble-row ${index % 2 === 0 ? 'bubble-align-right' : 'bubble-align-left'} ${isTestimonialsVisible ? 'anim-slide-up' : ''}`}
+                key={`${currentTestimonialIndex}-${index}`}
+                style={{ animationDelay: `${index * 0.2}s` }}
+              >
+                <div className="chat-bubble">
+                  <div className="chat-bubble-left">
+                    <img src={testimonial.avatar} alt={testimonial.name} className="chat-avatar" />
+                  </div>
+                  <div className="chat-bubble-center">
+                    <div className="chat-bubble-header-info">
+                      <span className="chat-name">{testimonial.name}</span>
+                      <span className="chat-company-role">{testimonial.role} @ {testimonial.company}</span>
+                    </div>
+                    <div className="chat-rating-stars">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <svg key={i} xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#1AD8E8" stroke="#1AD8E8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                      ))}
+                    </div>
+                    <p className="chat-text">{testimonial.text}</p>
+                  </div>
+                  <div className="chat-bubble-right">
+                    <div className="chat-check">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                  </div>
                 </div>
-                <div className="testimonial-company">{testimonial.company}</div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Right Column: Text Content */}
+          <div className="chat-content-column">
+            <h2 className="chat-layout-title">
+              Avis des clients sur<br /><span className="text-dim">Travail, Utilisabilité et Conception.</span>
+            </h2>
+            <p className="chat-layout-subtitle">
+              Écoutez nos clients satisfaits ! Découvrez comment nous les avons aidés à atteindre leurs objectifs et à créer un impact durable.
+            </p>
+            <button className="btn-chat-action" onClick={() => setIsReviewOpen(true)}>
+              Ajouter un avis
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="features-section">
-        <h2 className="mission-vision-section-title">Pourquoi nous</h2>
-        <div className="mission-vision-layout">
-          <div className="mission-vision-left">
-            <div className="mission-card">
-              <h3>Notre Mission</h3>
-              <p>
-                Permettre aux entreprises de toutes tailles d'accéder à des solutions
-                technologiques de pointe, sécurisées et performantes pour accélérer leur croissance.
-              </p>
+      <section id="features" className={`features-section ${isFeaturesVisible ? 'in-view' : ''}`} ref={featuresRef}>
+        <div className="features-top-row">
+          <div className="features-text-side">
+            <h2 className={`features-main-title ${isFeaturesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.1s' }}>
+              Pourquoi nous <br />choisir ?
+            </h2>
+            
+            <div className={`features-mission-vision ${isFeaturesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.2s' }}>
+              <div className="mv-block">
+                <h4>Notre Mission</h4>
+                <p>Permettre aux entreprises de toutes tailles d'accéder à des solutions technologiques de pointe, sécurisées et performantes pour accélérer leur croissance.</p>
+              </div>
+              <div className="mv-block">
+                <h4>Notre Vision</h4>
+                <p>Devenir le partenaire technologique de référence pour les entreprises qui veulent innover, se transformer et prospérer dans l'ère digitale.</p>
+              </div>
             </div>
 
-            <div className="mission-card">
-              <h3>Notre Vision</h3>
-              <p>
-                Devenir le partenaire technologique de référence pour les entreprises qui
-                veulent innover, se transformer et prospérer dans l'ère digitale.
+            <div className={`features-stats-mini-grid ${isFeaturesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.3s' }}>
+              <div className="mini-stat-item">
+                <h4>99%</h4>
+                <p>Précision des solutions IA livrées.</p>
+              </div>
+              <div className="mini-stat-item">
+                <h4>2x</h4>
+                <p>Vitesse de développement.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className={`features-image-side ${isFeaturesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.4s' }}>
+            <div className="features-curved-wrapper">
+              <img src={collaborationImg} alt="Collaboration" className="features-img" />
+            </div>
+          </div>
+        </div>
+
+        <div className="features-values-header">
+          <div className={`values-label-badge ${isFeaturesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.4s' }}>
+            <span className="values-label-dot"></span>
+            Nos Valeurs
+          </div>
+          <h3 className={`values-main-title ${isFeaturesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.5s' }}>
+            Ce qui nous <span className="values-title-accent">définit</span>
+          </h3>
+        </div>
+
+        <div className="features-bottom-grid">
+          {[
+            {
+              title: 'Innovation',
+              desc: 'Nous repoussons les limites de la technologie.',
+              color: '#A364FF',
+              border: 'rgba(163,100,255,0.3)',
+              glow: 'rgba(163,100,255,0.12)',
+              icon: (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                </svg>
+              ),
+            },
+            {
+              title: 'Sécurité',
+              desc: 'La protection des données est notre priorité.',
+              color: '#1AD8E8',
+              border: 'rgba(26,216,232,0.3)',
+              glow: 'rgba(26,216,232,0.12)',
+              icon: (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+              ),
+            },
+            {
+              title: 'Excellence',
+              desc: 'Nous visons la perfection dans chaque projet.',
+              color: '#F59E0B',
+              border: 'rgba(245,158,11,0.3)',
+              glow: 'rgba(245,158,11,0.12)',
+              icon: (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              ),
+            },
+            {
+              title: 'Transparence',
+              desc: 'Communication claire et honnête à chaque étape.',
+              color: '#10B981',
+              border: 'rgba(16,185,129,0.3)',
+              glow: 'rgba(16,185,129,0.12)',
+              icon: (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              ),
+            },
+            {
+              title: 'Performance',
+              desc: 'Des résultats mesurables et un impact réel.',
+              color: '#3B82F6',
+              border: 'rgba(59,130,246,0.3)',
+              glow: 'rgba(59,130,246,0.12)',
+              icon: (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              ),
+            },
+            {
+              title: 'Orientation Client',
+              desc: 'Votre succès est notre objectif principal.',
+              color: '#F472B6',
+              border: 'rgba(244,114,182,0.3)',
+              glow: 'rgba(244,114,182,0.12)',
+              icon: (
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              ),
+            },
+          ].map((value, index) => (
+            <div
+              className={`feature-value-card ${isFeaturesVisible ? 'anim-slide-up' : ''}`}
+              key={value.title}
+              style={{
+                animationDelay: `${0.6 + index * 0.1}s`,
+                '--card-color': value.color,
+                '--card-border': value.border,
+                '--card-glow': value.glow,
+              }}
+            >
+              <div className="fvc-icon" style={{ color: value.color, background: value.glow, boxShadow: `0 0 20px ${value.glow}` }}>
+                {value.icon}
+              </div>
+              <h3 style={{ color: value.color }}>{value.title}</h3>
+              <p>{value.desc}</p>
+              <div className="fvc-line" style={{ background: `linear-gradient(90deg, ${value.color}, transparent)` }}></div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Solutions / Approach Section */}
+      <section className={`solutions-section ${isApproachVisible ? 'in-view' : ''}`} ref={approachRef}>
+        <div className="approach-container-split">
+          <div className="approach-left-side">
+            <div className="approach-image-mask">
+              <img src={burjImg} alt="Architecture" className="approach-hero-img" />
+            </div>
+            <div className="approach-left-content">
+              <h2 className={`approach-main-title ${isApproachVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.1s' }}>
+                NOTRE <br />APPROCHE
+              </h2>
+              <p className={`approach-main-desc ${isApproachVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.2s' }}>
+                Nous combinons une méthodologie rigoureuse avec une vision créative pour transformer vos idées en réalités numériques puissantes.
               </p>
             </div>
           </div>
 
-          <div className="mission-vision-right">
-            <div className="values-visual-panel">
-              <h3 className="values-visual-title">Nos Valeurs</h3>
-              <div className="values-visual-grid">
-                {valuesData.map((value) => (
-                  <div className="values-visual-card" key={value.title}>
-                    <span className="values-visual-icon">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polygon points="12 2 15 9 22 9 16.5 13.5 18.5 21 12 16.8 5.5 21 7.5 13.5 2 9 9 9"></polygon>
-                      </svg>
-                    </span>
-                    <h4>{value.title}</h4>
-                    <p>{value.desc}</p>
+          <div className="approach-right-side">
+            <div className="approach-steps-vertical">
+              {approachSteps.map((step, index) => (
+                <div className={`approach-vertical-item ${isApproachVisible ? 'anim-slide-up' : ''}`} key={step.number} style={{ animationDelay: `${0.3 + index * 0.1}s` }}>
+                  <div className="approach-icon-circle" style={{ 
+                    background: index % 3 === 0 ? 'linear-gradient(135deg, #4F46E5, #3B82F6)' : 
+                               index % 3 === 1 ? 'linear-gradient(135deg, #06B6D4, #0891B2)' : 
+                               'linear-gradient(135deg, #8B5CF6, #7C3AED)'
+                  }}>
+                    {step.number}
                   </div>
-                ))}
-              </div>
+                  <div className="approach-v-line"></div>
+                  <div className="approach-step-text">
+                    <h3>{step.title}</h3>
+                    <p>{step.subtitle}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Solutions / Marquee Section */}
-      <section className="solutions-section">
-        <h2 className="approach-title">Notre Approche</h2>
-
-        <div className="approach-steps-row">
-          {approachSteps.map((step) => (
-            <div className="approach-step-card" key={step.number}>
-              <img src={step.bg} alt={step.title} className="approach-step-bg" />
-              <div className="approach-step-overlay"></div>
-              <div className="approach-step-content">
-                <div className="approach-step-number">{step.number}</div>
-                <h3 className="approach-step-title">{step.title}</h3>
-                <p className="approach-step-subtitle">{step.subtitle}</p>
+        {/* Approach Advantages Grid */}
+        <div className="approach-advantages-grid">
+          {[
+            {
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                </svg>
+              ),
+              color: '#A364FF',
+              glow: 'rgba(163,100,255,0.35)',
+              title: 'Solutions Sur Mesure',
+              desc: 'Chaque projet est unique. Nous concevons des solutions adaptées à vos besoins spécifiques.',
+              delay: '0.5s',
+            },
+            {
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              ),
+              color: '#1AD8E8',
+              glow: 'rgba(26,216,232,0.35)',
+              title: 'Sécurité Avant Tout',
+              desc: 'La sécurité est intégrée dès la conception dans tous nos projets.',
+              delay: '0.6s',
+            },
+            {
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+              ),
+              color: '#F59E0B',
+              glow: 'rgba(245,158,11,0.35)',
+              title: 'Performance Optimale',
+              desc: 'Des systèmes rapides, fiables et scalables pour soutenir votre croissance.',
+              delay: '0.7s',
+            },
+            {
+              icon: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+                  <line x1="18" y1="8" x2="23" y2="8"/><line x1="20" y1="5" x2="23" y2="3"/>
+                  <line x1="20" y1="11" x2="23" y2="13"/>
+                </svg>
+              ),
+              color: '#10B981',
+              glow: 'rgba(16,185,129,0.35)',
+              title: 'Expertise Technique',
+              desc: "Une équipe d'ingénieurs expérimentés maîtrisant les technologies de pointe.",
+              delay: '0.8s',
+            },
+          ].map((adv, i) => (
+            <div
+              key={adv.title}
+              className={`approach-adv-card ${isApproachVisible ? 'anim-slide-up' : ''}`}
+              style={{ animationDelay: adv.delay }}
+            >
+              <div className="approach-adv-icon" style={{ color: adv.color, background: `${adv.glow}`.replace('0.35','0.12'), boxShadow: `0 0 24px ${adv.glow}` }}>
+                {adv.icon}
               </div>
+              <h3 className="approach-adv-title" style={{ color: adv.color }}>{adv.title}</h3>
+              <p className="approach-adv-desc">{adv.desc}</p>
+              <div className="approach-adv-line" style={{ background: `linear-gradient(90deg, ${adv.color}, transparent)` }}></div>
             </div>
           ))}
         </div>
-
-        <div className="approach-benefits-grid">
-          {approachBenefits.map((benefit) => (
-            <div className="approach-benefit-item" key={benefit.title}>
-              <div className="approach-benefit-head">
-                <span className="approach-check-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="9"></circle>
-                    <path d="m8.5 12 2.2 2.2 4.8-4.8"></path>
-                  </svg>
-                </span>
-                <h4>{benefit.title}</h4>
-              </div>
-              <p>{benefit.desc}</p>
-            </div>
-          ))}
-        </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
-        {/* Sleek Professional Spotlight Background */}
+      <section ref={statsRef} className={`stats-section ${isStatsVisible ? 'in-view' : ''}`}>
         <div className="stats-glow"></div>
 
-        <div className="status-badge" style={{ backgroundColor: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.08)', color: '#A0A0A0', marginBottom: '2rem' }}>
-          <span className="status-dot" style={{ backgroundColor: '#D3D3D3', boxShadow: 'none', animation: 'none' }}></span>
-          Fonctionnalités
-        </div>
 
-        <h2 className="stats-title">
-          Unlimited Design Features<br />
-          <span className="text-dim">Delivered In A Second!</span>
+        <h2 className="stats-title reveal-text">
+          Unlimited Digital <span className="text-dim">Performance</span>
         </h2>
 
-        <p className="stats-subtitle">
-          Get unlimited design features that give you the freedom <br />to create without boundaries.
+        <p className="stats-subtitle reveal-text" style={{ transitionDelay: '0.2s' }}>
+          Nous concevons des écosystèmes digitaux de haute performance qui propulsent votre croissance vers de nouveaux sommets.
         </p>
 
-        <div className="stats-grid-wrapper">
-          <div className="stats-x-center">X</div>
-          <div className="stats-grid">
-            {statsData.map((stat, index) => (
-              <div className="stat-card" key={index}>
-                <div className="stat-icon-circle">
-                  {stat.icon}
+        <div className="about-section-container reveal-up" style={{ transitionDelay: '0.4s' }}>
+          {/* Circular Text Badge */}
+          <div className="circular-text-container">
+            <svg viewBox="0 0 100 100" width="130" height="130">
+              <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none" />
+              <text className="circular-text">
+                <textPath xlinkHref="#circlePath">
+                  À PROPOS DE NOUS • GIVENX TECH • INNOVATION • DIGITAL •
+                </textPath>
+              </text>
+            </svg>
+            <div className="circular-inner-dot"></div>
+          </div>
+          <div className="about-content-wrapper">
+            <div className="about-image-column">
+              <div className="about-image-frame">
+                <div className="model-viewer-ui">
+                  <div className="ui-corner top-left"></div>
+                  <div className="ui-corner top-right"></div>
+                  <div className="ui-corner bottom-left"></div>
+                  <div className="ui-corner bottom-right"></div>
+                  <div className="ui-scan-line"></div>
+                  <div className="ui-coords">X: 12.4Y: 88.2</div>
                 </div>
-                <div className="stat-number">
-                  {stat.value}<span className="stat-suffix">{stat.suffix}</span>
-                </div>
-                <p className="stat-label">{stat.label}</p>
+
+                <img
+                  src={imgAbout}
+                  alt="About GivenX"
+                  className="about-pop-image-3d"
+                />
+
+                <div className="model-glow-effect"></div>
               </div>
-            ))}
+            </div>
+
+            <div className="about-text-column">
+              <h3 className="about-title-small">À PROPOS DE GIVENX</h3>
+              <p className="about-description">
+                Nous sommes une équipe passionnée de créatifs et de technologues dédiés à repousser les limites du digital. Notre mission est de transformer vos visions en expériences numériques mémorables et performantes.
+              </p>
+              <p className="about-description">
+                Chaque projet est pour nous une opportunité d'innover et de créer de la valeur durable pour nos partenaires, en alliant design d'avant-garde et expertise technique de pointe.
+              </p>
+
+              <div className="about-socials">
+                <span className="social-label">Suivez-nous :</span>
+                <div className="social-icons-row">
+                  <a href="#" className="about-social-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                  <a href="#" className="about-social-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg></a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+      {/* Marquee Section */}
+      <div className="brand-marquee">
+        <div className="marquee-content">
+          {[...Array(10)].map((_, i) => (
+            <span key={i} className="marquee-item">GivenX</span>
+          ))}
+          {/* Duplicate for seamless loop */}
+          {[...Array(10)].map((_, i) => (
+            <span key={i + 10} className="marquee-item">GivenX</span>
+          ))}
+        </div>
+      </div>
 
       {/* FAQ Section */}
       <section className="faq-section">
@@ -730,108 +1278,68 @@ function App() {
       </section>
 
       {/* CTA Section */}
-      <section className="cta-section">
+      <section className={`cta-section ${isCtaVisible ? 'in-view' : ''}`} ref={ctaRef}>
         <video className="cta-bg-video" autoPlay loop muted playsInline>
           <source src={ctaVideoBg} type="video/mp4" />
         </video>
         <div className="cta-content">
-          <div className="status-badge cta-badge">
+          <div className={`status-badge cta-badge ${isCtaVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.1s' }}>
             <span className="status-dot green-dot"></span>
             Disponible pour de nouveaux projets
           </div>
-          <h2 className="cta-title">
+          <h2 className={`cta-title ${isCtaVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.2s' }}>
             Prêt à transformer votre entreprise ?
           </h2>
-          <p className="cta-subtitle">
+          <p className={`cta-subtitle ${isCtaVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.3s' }}>
             Contactez-nous aujourd'hui pour une consultation gratuite.
           </p>
-
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="contact-section-new">
-        <div className="contact-header-new">
-          <div className="contact-title-container">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#628193"><polygon points="20 4 4 12 20 20"></polygon></svg>
-            <h2 className="contact-main-title">NOUS CONTACTER</h2>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="#628193"><polygon points="4 4 20 12 4 20"></polygon></svg>
-          </div>
-          <div className="contact-dashed-line"></div>
-        </div>
-
-        <div className="contact-layout-wrapper">
-          {/* Left Form Panel */}
-          <div className="form-panel-custom">
-            <form className="contact-form-minimal" onSubmit={handleContactSubmit}>
-              <div className="form-field-wrapper">
-                <label className="minimal-label">Nom complet</label>
-                <input type="text" className="minimal-input" required />
-              </div>
-
-              <div className="form-field-wrapper">
-                <label className="minimal-label">E-mail</label>
-                <input type="email" className="minimal-input" required />
-              </div>
-
-              <div className="form-field-row">
-                <div className="form-field-wrapper form-field-wrapper--half">
-                  <label className="minimal-label">Entreprise</label>
-                  <input type="text" className="minimal-input" required />
-                </div>
-                <div className="form-field-wrapper form-field-wrapper--half">
-                  <label className="minimal-label">Secteur</label>
-                  <input type="text" className="minimal-input" required />
-                </div>
-              </div>
-
-              <div className="form-field-wrapper message-wrapper">
-                <label className="minimal-label">Message</label>
-                <textarea className="minimal-textarea" required></textarea>
-              </div>
-
-              <button type="submit" className="minimal-submit-btn">
-                ENVOYER LE MESSAGE
-              </button>
-            </form>
-        
-        
-          </div>
-
-          {/* Right Info Panel */}
-          <div className="info-overlapping-panel">
-            <div className="decor-slate-circle"></div>
-            
-            <div className="info-box-pill">
-               NOTRE BUREAU
-            </div>
-            
-            <div className="info-box-content">
-               <p className="info-sub-text">
-                  Retrouvez-nous dans nos locaux pour discuter de vos projets en personne.
-               </p>
-               <p className="info-sub-text">
-                  Nous sommes ravis d'accompagner votre transformation.
-               </p>
-               
-               <div className="info-map-embed">
-                  <iframe
-                    title="Technopark Casablanca"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3324.0!2d-7.6567!3d33.5897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d282b8d77ca1%3A0x4c07aa8765b27db5!2sTechnopark%20Casablanca!5e0!3m2!1sfr!2sma!4v1680000000000"
-                    width="100%"
-                    height="220"
-                    style={{ border: 0, borderRadius: '12px', display: 'block' }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-               </div>
-               
-              
-            </div>
+          <div className={`cta-btn-row ${isCtaVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.45s', display: 'flex', justifyContent: 'center' }}>
+            <Link 
+              to="/contact" 
+              className="cta-contact-btn" 
+              onClick={() => window.scrollTo(0, 0)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.8rem',
+                padding: '1rem 2.5rem',
+                background: 'rgba(26, 216, 232, 0.1)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(26, 216, 232, 0.3)',
+                borderRadius: '50px',
+                color: '#fff',
+                fontWeight: '600',
+                fontSize: '1.1rem',
+                textDecoration: 'none',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 0 20px rgba(26, 216, 232, 0.05)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(26, 216, 232, 0.2)';
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = '0 15px 40px rgba(26, 216, 232, 0.4), inset 0 0 20px rgba(26, 216, 232, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(26, 216, 232, 0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(26, 216, 232, 0.1)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.2), inset 0 0 20px rgba(26, 216, 232, 0.05)';
+                e.currentTarget.style.borderColor = 'rgba(26, 216, 232, 0.3)';
+              }}
+            >
+              Contactez-nous
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1AD8E8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.3s' }}>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
+
+
+
+
 
       {/* Footer Section */}
       <footer className="footer-section">
@@ -856,11 +1364,11 @@ function App() {
             <div className="footer-top-line" aria-hidden="true"></div>
           </div>
 
-          <div className="footer-grid">
+          <div className="footer-grid" style={{ gridTemplateColumns: '1.2fr 0.8fr 1fr 1.5fr', gap: '2rem' }}>
             <div className="footer-brand">
               <img src={logoTech2} alt="GivenX Group" className="footer-logo-img" />
               <p className="footer-desc">Votre partenaire technologique de confiance.</p>
-              <a href="#contact" className="footer-cta-btn">Contact us</a>
+              <Link to="/contact" className="footer-cta-btn" onClick={() => window.scrollTo(0, 0)}>Contact us</Link>
             </div>
 
             <div className="footer-col">
@@ -869,7 +1377,7 @@ function App() {
                 <li><a href="#services">Services</a></li>
                 <li><a href="#industries">Industries</a></li>
                 <li><a href="#features">Pourquoi nous</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><Link to="/contact" onClick={() => window.scrollTo(0, 0)}>Contact</Link></li>
               </ul>
             </div>
 
@@ -877,9 +1385,72 @@ function App() {
               <h4 className="footer-col-title">Get in touch</h4>
               <ul className="footer-menu">
                 <li><a href="mailto:contact@givenxtech.com">contact@givenxtech.com</a></li>
-                <li><a href="tel:+212600000000">+212 600 000 000</a></li>
+                <li><a href="tel:+212635166074">+212 635 166 074</a></li>
                 <li><span className="footer-text">Casablanca, Maroc</span></li>
               </ul>
+            </div>
+
+            {/* Compact Form on the Right */}
+            <div className="footer-col" style={{ padding: '0', display: 'flex', flexDirection: 'column' }}>
+              {isSuccess ? (
+                <div style={{ textAlign: 'center', padding: '1.5rem 0', border: '1px dashed rgba(26, 216, 232, 0.5)', borderRadius: '8px', background: 'rgba(26, 216, 232, 0.05)' }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1AD8E8" strokeWidth="2" style={{ margin: '0 auto 0.5rem', display: 'block' }}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <p style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 0.25rem' }}>Message envoyé</p>
+                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', margin: 0 }}>Nous vous recontacterons vite.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleContactFormSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <h4 className="footer-col-title" style={{ marginBottom: '0.8rem', color: '#fff', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}>
+                    <span style={{ width: '6px', height: '6px', background: '#1AD8E8', borderRadius: '50%', display: 'inline-block', boxShadow: '0 0 8px #1AD8E8' }}></span>
+                    Démarrer un projet
+                  </h4>
+                  <input 
+                     type="text" 
+                     placeholder="Nom complet" 
+                     required 
+                     value={formData.name}
+                     onChange={(e) => setFormData({...formData, name: e.target.value})}
+                     style={{ width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
+                  />
+                  <input 
+                    type="email" 
+                    placeholder="Email professionnel" 
+                    required 
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    style={{ width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
+                  />
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <input 
+                      type="text" 
+                      placeholder="Société" 
+                      required 
+                      value={formData.company}
+                      onChange={(e) => setFormData({...formData, company: e.target.value})}
+                      style={{ flex: 1, width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
+                    />
+                    <input 
+                      type="text" 
+                      placeholder="Secteur" 
+                      required 
+                      value={formData.sector}
+                      onChange={(e) => setFormData({...formData, sector: e.target.value})}
+                      style={{ flex: 1, width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
+                    />
+                  </div>
+                  <textarea 
+                    placeholder="Votre message..." 
+                    required
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    style={{ width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', minHeight: '60px', resize: 'none', outline: 'none' }}
+                  ></textarea>
+                  <button type="submit" className="footer-form-btn" disabled={isSubmitting} style={{ alignSelf: 'flex-end', padding: '0.5rem 1.2rem', background: 'transparent', color: '#1AD8E8', border: '1px solid rgba(26, 216, 232, 0.5)', borderRadius: '50px', fontWeight: '500', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.5rem', transition: 'all 0.3s ease' }}>
+                    {isSubmitting ? 'Envoi...' : 'Envoyer'}
+                    {!isSubmitting && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
@@ -990,6 +1561,17 @@ function App() {
         </div>
       )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainLanding />} />
+        <Route path="/contact" element={<ContactPage />} />
+      </Routes>
+    </Router>
   );
 }
 
