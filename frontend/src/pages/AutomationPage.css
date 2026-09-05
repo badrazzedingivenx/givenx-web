@@ -1,0 +1,913 @@
+/* AutomationPage — Pro Flow + Chakra Petch (aligné Cybersécurité) */
+
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+.atm-page {
+  --atm-bg: #08050f;
+  --atm-surface: #110c1a;
+  --atm-elevated: #161022;
+  --atm-purple: #608dd4;
+  --atm-purple-dim: rgba(59, 130, 246, 0.12);
+  --atm-cyan: #1AD8E8;
+  --atm-cyan-dim: rgba(26, 216, 232, 0.12);
+  --atm-text: #e8f0f8;
+  --atm-muted: rgba(232, 240, 248, 0.5);
+  --atm-border: rgba(26, 216, 232, 0.15);
+  --atm-display: 'Chakra Petch', sans-serif;
+  --atm-mono: 'Share Tech Mono', monospace;
+
+  background: var(--atm-bg);
+  color: var(--atm-text);
+  font-family: var(--atm-display);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.atm-bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 216, 232, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 216, 232, 0.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.atm-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.atm-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Nav */
+.atm-nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 4rem;
+  border-bottom: 1px solid var(--atm-border);
+  background: rgba(8, 5, 15, 0.9);
+  backdrop-filter: blur(12px);
+}
+
+.atm-logo img { height: 36px; }
+
+.atm-nav-end {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.atm-back {
+  color: var(--atm-muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.2s;
+}
+
+.atm-back:hover { color: var(--atm-cyan); }
+
+.atm-nav-cta {
+  padding: 0.6rem 1.3rem;
+  border: 1px solid var(--atm-purple);
+  color: var(--atm-purple);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.atm-nav-cta:hover {
+  background: var(--atm-purple-dim);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+}
+
+/* Hero */
+.atm-hero {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  padding: 4rem 4rem 5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.atm-eyebrow {
+  display: block;
+  font-family: var(--atm-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--atm-cyan);
+  margin-bottom: 1rem;
+}
+
+.atm-hero-title {
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.atm-accent {
+  color: var(--atm-purple);
+  text-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+.atm-hero-lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--atm-muted);
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+
+.atm-hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.atm-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.9rem 1.8rem;
+  background: var(--atm-purple);
+  color: var(--atm-bg);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border: none;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  transition: box-shadow 0.3s, transform 0.2s;
+}
+
+.atm-btn-primary:hover {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.45);
+  transform: translateY(-2px);
+}
+
+.atm-btn-outline {
+  padding: 0.9rem 1.8rem;
+  border: 1px solid var(--atm-border);
+  color: var(--atm-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: border-color 0.25s, color 0.25s;
+}
+
+.atm-btn-outline:hover {
+  border-color: var(--atm-cyan);
+  color: var(--atm-cyan);
+}
+
+.atm-btn-lg { padding: 1rem 2rem; }
+
+.atm-hero-kpis {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.atm-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.atm-kpi strong {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--atm-cyan);
+  font-family: var(--atm-mono);
+}
+
+.atm-kpi span {
+  font-family: var(--atm-mono);
+  font-size: 0.65rem;
+  color: var(--atm-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.atm-kpi-sep {
+  width: 1px;
+  height: 32px;
+  background: var(--atm-border);
+}
+
+/* Hero visual */
+.atm-hero-visual { position: relative; }
+
+.atm-hero-img-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--atm-border);
+  aspect-ratio: 4/3;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+.atm-hero-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.atm-hero-img-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8, 5, 15, 0.55), transparent 45%);
+  pointer-events: none;
+}
+
+.atm-flow-widget {
+  position: absolute;
+  bottom: -1.5rem;
+  left: -1rem;
+  right: 1rem;
+  background: var(--atm-elevated);
+  border: 1px solid var(--atm-border);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.atm-widget-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--atm-mono);
+  font-size: 0.68rem;
+  color: var(--atm-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.7rem;
+}
+
+.atm-widget-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: atmBlink 2s ease-in-out infinite;
+}
+
+@keyframes atmBlink {
+  50% { opacity: 0.4; }
+}
+
+.atm-widget-nodes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--atm-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  margin-bottom: 0.7rem;
+  color: var(--atm-muted);
+}
+
+.atm-widget-hub {
+  padding: 0.15rem 0.5rem;
+  background: var(--atm-purple-dim);
+  border: 1px solid rgba(163, 100, 255, 0.35);
+  border-radius: 4px;
+  color: var(--atm-purple);
+}
+
+.atm-widget-arrow { color: var(--atm-cyan); }
+
+.atm-widget-logs {
+  font-family: var(--atm-mono);
+  font-size: 0.65rem;
+}
+
+.atm-log-line {
+  padding: 0.2rem 0;
+  color: var(--atm-muted);
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+
+.atm-log-line.active { opacity: 1; color: var(--atm-text); }
+
+.atm-log-status { margin-right: 0.4rem; font-weight: 700; }
+.atm-log-status.s-ok { color: var(--atm-cyan); }
+.atm-log-status.s-run { color: var(--atm-purple); }
+
+/* Tools */
+.atm-tools {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 4rem 2.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.atm-tool-chip {
+  font-family: var(--atm-mono);
+  font-size: 0.65rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--atm-border);
+  color: var(--atm-muted);
+  letter-spacing: 0.06em;
+}
+
+/* Sections */
+.atm-section {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 4rem 4rem 5rem;
+}
+
+.atm-section-head {
+  max-width: 560px;
+  margin-bottom: 2.5rem;
+}
+
+.atm-section-head h2 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+}
+
+.atm-section-head p {
+  color: var(--atm-muted);
+  line-height: 1.6;
+}
+
+/* Offer — layers (fix) */
+.atm-offer-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.atm-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.atm-layer {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1.1rem 1.4rem;
+  background: var(--atm-surface);
+  border: 1px solid var(--atm-border);
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.35s;
+  outline: none;
+}
+
+.atm-layer:hover,
+.atm-layer:focus-visible {
+  border-left-color: rgba(59, 130, 246, 0.4);
+}
+
+.atm-layer.active {
+  border-left-color: var(--atm-purple);
+  background: var(--atm-purple-dim);
+  box-shadow: inset 0 0 40px rgba(59, 130, 246, 0.04);
+}
+
+.atm-layer-bar {
+  position: relative;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.atm-layer-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--atm-purple), transparent);
+  width: calc(100% - var(--layer-depth) * 12%);
+  opacity: 0.5;
+  transition: width 0.4s, opacity 0.4s;
+}
+
+.atm-layer.active .atm-layer-fill {
+  width: 100%;
+  opacity: 1;
+}
+
+.atm-layer-num {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-family: var(--atm-mono);
+  font-size: 0.62rem;
+  color: var(--atm-muted);
+}
+
+.atm-layer-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.atm-layer-check {
+  color: var(--atm-purple);
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.3s;
+  flex-shrink: 0;
+}
+
+.atm-layer.active .atm-layer-check { opacity: 1; }
+
+.atm-layer-tag {
+  display: block;
+  font-family: var(--atm-mono);
+  font-size: 0.62rem;
+  color: var(--atm-cyan);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.2rem;
+}
+
+.atm-layer-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.atm-layer-detail {
+  position: sticky;
+  top: 6rem;
+  padding: 2rem;
+  background: var(--atm-elevated);
+  border: 1px solid var(--atm-border);
+  border-radius: 10px;
+}
+
+.atm-layer-detail::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--atm-purple), var(--atm-cyan));
+  border-radius: 10px 10px 0 0;
+}
+
+.atm-layer-detail-tag {
+  font-family: var(--atm-mono);
+  font-size: 0.68rem;
+  color: var(--atm-cyan);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.atm-layer-detail h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0.75rem 0 0.85rem;
+  line-height: 1.25;
+}
+
+.atm-layer-detail p {
+  color: var(--atm-muted);
+  line-height: 1.65;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Benefits — bento métriques */
+.atm-benefits {
+  background: linear-gradient(180deg, transparent, rgba(59, 130, 246, 0.03), transparent);
+  max-width: 100%;
+  padding-left: max(4rem, calc((100vw - 1400px) / 2 + 4rem));
+  padding-right: max(4rem, calc((100vw - 1400px) / 2 + 4rem));
+}
+
+.atm-bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.atm-bento-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 1.5rem;
+  background: var(--atm-surface);
+  border: 1px solid var(--atm-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--atm-display);
+  color: var(--atm-text);
+  transition: all 0.35s;
+  position: relative;
+  overflow: hidden;
+}
+
+.atm-bento-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--atm-purple), var(--atm-cyan));
+  transform: scaleX(0);
+  transition: transform 0.35s;
+}
+
+.atm-bento-card:hover,
+.atm-bento-card.active {
+  border-color: rgba(59, 130, 246, 0.35);
+  background: var(--atm-purple-dim);
+  transform: translateY(-4px);
+}
+
+.atm-bento-card.active::after,
+.atm-bento-card:hover::after {
+  transform: scaleX(1);
+}
+
+.atm-bento-card.wide {
+  grid-column: span 2;
+}
+
+.atm-bento-num {
+  font-family: var(--atm-mono);
+  font-size: 0.65rem;
+  color: var(--atm-muted);
+  margin-bottom: 0.5rem;
+}
+
+.atm-bento-metric {
+  font-family: var(--atm-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--atm-purple);
+  line-height: 1;
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+}
+
+.atm-bento-card.active .atm-bento-metric { color: var(--atm-cyan); }
+
+.atm-bento-card strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: 0.4rem;
+}
+
+.atm-bento-card p {
+  font-size: 0.82rem;
+  color: var(--atm-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.atm-bento-label {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  font-family: var(--atm-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--atm-cyan);
+  opacity: 0.7;
+}
+
+/* Methodology — pipeline vertical */
+.atm-method {
+  background: rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  padding-left: max(4rem, calc((100vw - 1400px) / 2 + 4rem));
+  padding-right: max(4rem, calc((100vw - 1400px) / 2 + 4rem));
+}
+
+.atm-method .atm-section-head {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.atm-pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.atm-pipe-step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1.5rem;
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.3s;
+}
+
+.atm-pipe-step:not(.active) { opacity: 0.55; }
+.atm-pipe-step:hover,
+.atm-pipe-step.active,
+.atm-pipe-step:focus-visible { opacity: 1; }
+
+.atm-pipe-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.atm-pipe-dot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--atm-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--atm-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--atm-muted);
+  background: var(--atm-bg);
+  flex-shrink: 0;
+  transition: all 0.35s;
+}
+
+.atm-pipe-step.active .atm-pipe-dot {
+  border-color: var(--atm-cyan);
+  color: var(--atm-cyan);
+  box-shadow: 0 0 20px rgba(26, 216, 232, 0.25);
+}
+
+.atm-pipe-step.done .atm-pipe-dot {
+  border-color: var(--atm-purple);
+  color: var(--atm-purple);
+}
+
+.atm-pipe-line {
+  width: 2px;
+  flex: 1;
+  min-height: 32px;
+  background: linear-gradient(to bottom, var(--atm-border), rgba(26, 216, 232, 0.2));
+  margin: 4px 0;
+}
+
+.atm-pipe-step.done .atm-pipe-line {
+  background: linear-gradient(to bottom, var(--atm-purple), var(--atm-cyan));
+}
+
+.atm-pipe-body {
+  padding: 0.5rem 0 2rem;
+}
+
+.atm-pipe-badge {
+  display: inline-block;
+  font-family: var(--atm-mono);
+  font-size: 0.65rem;
+  color: var(--atm-purple);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.atm-pipe-body h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.45rem;
+}
+
+.atm-pipe-body p {
+  font-size: 0.9rem;
+  color: var(--atm-muted);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 560px;
+}
+
+/* Use cases */
+.atm-cases-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+.atm-case-card {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--atm-border);
+  background: var(--atm-surface);
+  transition: transform 0.35s;
+}
+
+.atm-case-card:hover { transform: translateY(-6px); }
+
+.atm-case-img {
+  position: relative;
+  height: 170px;
+  overflow: hidden;
+}
+
+.atm-case-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.atm-case-card:hover .atm-case-img img { transform: scale(1.05); }
+
+.atm-case-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(8, 5, 15, 0.7), transparent);
+}
+
+.atm-case-body { padding: 1.3rem; }
+
+.atm-case-badge {
+  font-family: var(--atm-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--atm-cyan);
+  display: block;
+  margin-bottom: 0.45rem;
+}
+
+.atm-case-body h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.4rem;
+}
+
+.atm-case-body p {
+  font-size: 0.85rem;
+  color: var(--atm-muted);
+  line-height: 1.5;
+}
+
+/* CTA */
+.atm-cta {
+  max-width: 700px;
+  margin: 0 auto 4rem;
+  padding: 0 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.atm-cta-card {
+  position: relative;
+  text-align: center;
+  padding: 3rem 2.5rem;
+  background: var(--atm-surface);
+  border: 1px solid var(--atm-border);
+  border-radius: 12px;
+}
+
+.atm-cta-card::before,
+.atm-cta-card::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--atm-purple);
+  border-style: solid;
+}
+
+.atm-cta-card::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.atm-cta-card::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+.atm-cta-glow { display: none; }
+
+.atm-cta-card h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  margin-bottom: 0.85rem;
+}
+
+.atm-cta-card p {
+  color: var(--atm-muted);
+  line-height: 1.6;
+  margin-bottom: 1.75rem;
+}
+
+.atm-cta-trust {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+  font-family: var(--atm-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: var(--atm-muted);
+}
+
+/* Footer */
+.atm-footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid var(--atm-border);
+  color: var(--atm-muted);
+  font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .atm-hero { grid-template-columns: 1fr; }
+  .atm-hero-lead { max-width: none; }
+  .atm-flow-widget { left: 0; right: 0; bottom: -1rem; }
+
+  .atm-offer-layout { grid-template-columns: 1fr; }
+  .atm-layer-detail { position: static; }
+
+  .atm-bento { grid-template-columns: 1fr 1fr; }
+  .atm-bento-card.wide { grid-column: span 2; }
+
+  .atm-cases-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .atm-nav,
+  .atm-hero,
+  .atm-section,
+  .atm-cta,
+  .atm-tools { padding-left: 1.5rem; padding-right: 1.5rem; }
+
+  .atm-back { display: none; }
+
+  .atm-layer {
+    grid-template-columns: 70px 1fr;
+    gap: 0.85rem;
+  }
+
+  .atm-bento { grid-template-columns: 1fr; }
+  .atm-bento-card.wide { grid-column: span 1; }
+
+  .atm-pipe-step { grid-template-columns: 44px 1fr; gap: 1rem; }
+  .atm-pipe-dot { width: 36px; height: 36px; font-size: 0.65rem; }
+}

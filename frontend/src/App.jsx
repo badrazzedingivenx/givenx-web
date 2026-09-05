@@ -3,6 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ContactPage from './ContactPage';
 import './index.css';
 import xBg from './assets/X.png';
+import TechAuditPage from './pages/TechAuditPage';
+import SoftwareEngineeringPage from './pages/SoftwareEngineeringPage';
+import AutomationPage from './pages/AutomationPage';
+import CloudDevOpsPage from './pages/CloudDevOpsPage';
+import IADataPage from './pages/IADataPage';
+import CyberSecurityPage from './pages/CyberSecurityPage';
 import videoBg from './assets/Futuristic interface.mp4';
 import ctaVideoBg from './assets/Abstract Blue Liquid Fluid.mp4';
 import logoTech2 from './assets/Givenx-Tech 2.png';
@@ -50,7 +56,8 @@ const industriesData = [
 
 const servicesData = [
   {
-    title: "Conseil Tech & Audit Technique",
+    title: "Conseil Tech & Audit",
+    shortDesc: "Optimisez votre stratégie tech",
     desc: "Évaluez votre infrastructure, identifiez les failles et recevez une feuille de route stratégique pour optimiser vos systèmes.",
     iconClass: "icon-orange",
     icon: (
@@ -59,6 +66,7 @@ const servicesData = [
   },
   {
     title: "Ingénierie Logicielle",
+    shortDesc: "Développez sans limites",
     desc: "Applications web, mobiles et SaaS conçues avec les meilleures pratiques de développement.",
     iconClass: "icon-yellow",
     icon: (
@@ -67,6 +75,7 @@ const servicesData = [
   },
   {
     title: "IA & Solutions Data",
+    shortDesc: "Décisions pilotées par l'IA",
     desc: "Exploitez la puissance de l'IA et du Big Data pour des décisions plus intelligentes.",
     iconClass: "icon-white",
     icon: (
@@ -75,6 +84,7 @@ const servicesData = [
   },
   {
     title: "Automatisation & Intégration",
+    shortDesc: "Connectez tous vos outils",
     desc: "Optimisez vos processus métiers grâce à l'automatisation et l'intégration fluide de vos outils.",
     iconClass: "icon-purple",
     icon: (
@@ -83,6 +93,7 @@ const servicesData = [
   },
   {
     title: "Cloud & DevOps",
+    shortDesc: "Déployez à grande échelle",
     desc: "Déployez et gérez vos applications de manière évolutive et sécurisée avec nos solutions Cloud.",
     iconClass: "icon-green",
     icon: (
@@ -91,6 +102,7 @@ const servicesData = [
   },
   {
     title: "Cybersécurité & Audit",
+    shortDesc: "Protégez vos actifs digitaux",
     desc: "Protégez vos données et vos systèmes contre les menaces numériques avec nos audits de sécurité.",
     iconClass: "icon-blue",
     icon: (
@@ -99,38 +111,74 @@ const servicesData = [
   }
 ];
 
+const getServicePath = (title) => {
+  const paths = {
+    'Conseil Tech & Audit': '/tech-audit',
+    'Ingénierie Logicielle': '/ingenierie-logicielle',
+    'Automatisation & Intégration': '/automatisation',
+    'Cloud & DevOps': '/cloud-devops',
+    'IA & Solutions Data': '/ia-data',
+    'Cybersécurité & Audit': '/cybersecurite',
+  };
+  return paths[title] || '#services';
+};
+
 const testimonialsData = [
   {
     rating: 5,
-    text: "“Collaboration efficace et fluide avec l'agence, garantissant des livrables de haute qualité dans le respect des délais.”",
-    name: "John Smith",
-    role: "CEO",
-    company: "Innovate Solutions",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John&backgroundColor=c0aede"
+    text: "“Sportma apporte une approche innovante à la digitalisation du sport au Maroc. Chez GivnexTech, nous apprécions les projets qui utilisent la technologie pour simplifier l'expérience utilisateur et créer un impact positif. Nous suivons avec intérêt votre évolution et vous souhaitons beaucoup de succès.”",
+    name: "Omar Lahmouni",
+    role: "Fondateur",
+    company: "Sportma",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=OmarSportma&backgroundColor=c0aede"
   },
   {
     rating: 5,
-    text: "“Une équipe professionnelle, réactive et pleinement engagée, qui a su anticiper les besoins et proposer des solutions pertinentes avec une grande efficacité.”",
-    name: "Emily Davis",
-    role: "Product Manager",
-    company: "Nexus Digital",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily&backgroundColor=ffd5dc"
+    text: "“Félicitations à toute l'équipe fondatrice de Heqqi pour son engagement dans l'innovation et le développement de solutions à forte valeur ajoutée. Chez GivnexTech, nous apprécions les initiatives qui contribuent à faire évoluer l'écosystème technologique et entrepreneurial marocain. Nous vous souhaitons une belle réussite et beaucoup de succès pour la suite.”",
+    name: "Équipe fondatrice",
+    role: "Équipe fondatrice",
+    company: "Heqqi",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=EquipeHeqqi&backgroundColor=ffd5dc"
   },
   {
     rating: 5,
-    text: "“Grâce à Givnex Group, l'échange a été clair et la collaboration immédiatement productive.”",
-    name: "David Lee",
-    role: "Founder",
-    company: "GreenLeaf Enterprises",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David&backgroundColor=b6e3f4"
+    text: "“VisiTrip illustre le potentiel de l'innovation dans le tourisme et les services numériques. Chez GivnexTech, nous croyons que la transformation digitale est un levier essentiel pour améliorer l'expérience des utilisateurs et accélérer la croissance des entreprises. Félicitations pour cette belle initiative.”",
+    name: "Mohamed Ait Oubih",
+    role: "Fondateur",
+    company: "VisiTrip",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=MohamedVisi&backgroundColor=b6e3f4"
   },
   {
     rating: 5,
-    text: "“Un accompagnement sur-mesure et une équipe à l'écoute de nos moindres exigences.”",
-    name: "Sophie Dupont",
-    role: "CTO",
-    company: "TechNova",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie&backgroundColor=ffdfbf"
+    text: "“GoldTrust met en avant une vision axée sur la confiance et l'innovation. Chez GivnexTech, nous soutenons les entreprises qui développent des solutions technologiques modernes et performantes pour répondre aux besoins de leurs clients. Nous vous souhaitons une excellente continuation.”",
+    name: "Équipe dirigeante",
+    role: "Direction",
+    company: "GoldTrust",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=EquipeGold&backgroundColor=ffdfbf"
+  },
+  {
+    rating: 5,
+    text: "“Azoul Media se distingue par son engagement dans le marketing digital et la communication. Chez GivnexTech, nous partageons la conviction que l'innovation et la créativité sont des moteurs essentiels de la transformation digitale. Félicitations pour votre parcours et votre contribution à l'écosystème.”",
+    name: "Omar Lahmouni",
+    role: "Fondateur",
+    company: "Azoul Media",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=OmarAzoul&backgroundColor=d1f4ff"
+  },
+  {
+    rating: 5,
+    text: "“Bravo à toute l'équipe d'IndustryShark pour son engagement en faveur de l'innovation et de la performance des entreprises. Chez GivnexTech, nous sommes convaincus que les collaborations entre acteurs technologiques sont essentielles pour construire un écosystème digital solide et durable. Nous vous souhaitons beaucoup de réussite.”",
+    name: "Équipe fondatrice",
+    role: "Équipe fondatrice",
+    company: "IndustryShark",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=EquipeShark&backgroundColor=ffd3e8"
+  },
+  {
+    rating: 5,
+    text: "“AgriFlow apporte une approche innovante à la digitalisation du secteur agricole. Chez GivnexTech, nous apprécions les startups qui utilisent la technologie pour résoudre des problématiques réelles et créer de la valeur. Félicitations à Soukaina Jouineh pour cette initiative et bonne continuation.”",
+    name: "Soukaina Jouineh",
+    role: "Fondatrice",
+    company: "AgriFlow",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=SoukainaAgri&backgroundColor=d2f8d2"
   }
 ];
 
@@ -302,6 +350,9 @@ function MainLanding() {
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const servicesDropdownRef = useRef(null);
   const industriesRef = useRef(null);
   const servicesRef = useRef(null);
   const featuresRef = useRef(null);
@@ -343,6 +394,18 @@ function MainLanding() {
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
   const [isTestimonialsVisible, setIsTestimonialsVisible] = useState(false);
   const testimonialsRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (servicesDropdownRef.current && !servicesDropdownRef.current.contains(event.target)) {
+        setServicesDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     if (testimonials.length <= 3) return;
@@ -562,7 +625,112 @@ function MainLanding() {
           </div>
           <ul className="nav-links nav-links-desktop">
             <li><a href="#accueil">Accueil</a></li>
-            <li><a href="#services">Services</a></li>
+            <li className="dropdown-trigger-wrapper" ref={servicesDropdownRef}>
+              <button
+                type="button"
+                className="nav-services-trigger"
+                onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
+                aria-expanded={servicesDropdownOpen}
+              >
+                Services <span className={`dropdown-chevron ${servicesDropdownOpen ? 'rotated' : ''}`}>▼</span>
+              </button>
+
+              {/* Mega Menu Dropdown */}
+              <div className={`mega-menu-dropdown ${servicesDropdownOpen ? 'open' : ''}`}>
+                {/* Column 1: Services 2x3 Grid */}
+                <div className="mega-menu-col-left">
+                  <div className="dropdown-section-title">Nos Services</div>
+                  <div className="dropdown-services-grid">
+                    {servicesData.map((service, idx) => (
+                      <a
+                        href={getServicePath(service.title)}
+                        key={idx}
+                        className="dropdown-service-item"
+                        onClick={() => setServicesDropdownOpen(false)}
+                      >
+                        <div className={`dropdown-service-icon-wrapper ${service.iconClass}`}>
+                          {service.icon}
+                        </div>
+                        <div className="dropdown-service-info">
+                          <h4 className="dropdown-service-title">{service.title}</h4>
+                          <p className="dropdown-service-desc">{service.shortDesc}</p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Column 2: Highlight Card */}
+                <div className="mega-menu-col-middle">
+                  <div className="dropdown-section-title">À la une</div>
+                  <div className="dropdown-highlight-card">
+                    <div className="highlight-star-icon">✦</div>
+                    <div className="highlight-text-content">
+                      <h3>L'agence tech <span className="accent-blue">#1</span> pour propulser votre croissance digitale.</h3>
+
+                      <div className="highlight-visual-area">
+                        <div className="avatar-stack">
+                          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Amina&backgroundColor=b6e3f4" alt="Team" className="stack-avatar" />
+                          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Karim&backgroundColor=ffd5dc" alt="Team" className="stack-avatar" />
+                          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sofia&backgroundColor=ffdfbf" alt="Team" className="stack-avatar" />
+                          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rayan&backgroundColor=c0aede" alt="Team" className="stack-avatar" />
+                          <span className="stack-more-text">+12 experts</span>
+                        </div>
+
+                        <div className="highlight-stats-row">
+                          <div className="mini-stat-pill">
+                            <span className="mini-stat-num">500+</span>
+                            <span className="mini-stat-lbl">Projets</span>
+                          </div>
+                          <div className="mini-stat-pill">
+                            <span className="mini-stat-num">99%</span>
+                            <span className="mini-stat-lbl">Satisfaction</span>
+                          </div>
+                          <div className="mini-stat-pill">
+                            <span className="mini-stat-num">21+</span>
+                            <span className="mini-stat-lbl">Années</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Column 3: Stacked Cards */}
+                <div className="mega-menu-col-right">
+                  <div className="dropdown-section-title">Focus</div>
+
+                  {/* Card 1: Blue/Teal Card - Branding/Ingénierie */}
+                  <a href="#services" className="dropdown-stacked-card card-blue" onClick={() => setServicesDropdownOpen(false)}>
+                    <div>
+                      <div className="stacked-card-tag">Ingénierie</div>
+                      <h4 className="stacked-card-title">Applications mobiles, web & SaaS robustes.</h4>
+                    </div>
+                    <div className="illustration-blue-card">
+                      <div className="illustration-blue-card-glow"></div>
+                    </div>
+                  </a>
+
+                  {/* Card 2: Amber/Orange Card - Optimization */}
+                  <a href="#services" className="dropdown-stacked-card card-orange" onClick={() => setServicesDropdownOpen(false)}>
+                    <div>
+                      <div className="stacked-card-tag">Optimisation</div>
+                      <h4 className="stacked-card-title">Aide les entreprises à améliorer leur vitesse.</h4>
+                    </div>
+                    <div className="performance-metric-visual">
+                      <div className="performance-metric-bar" style={{ height: '30%' }}></div>
+                      <div className="performance-metric-bar" style={{ height: '55%' }}></div>
+                      <div className="performance-metric-bar" style={{ height: '80%' }}></div>
+                      <div className="performance-metric-bar" style={{ height: '100%' }}></div>
+                      <div className="performance-metric-score">
+                        <span className="performance-metric-score-dot"></span>
+                        <span>150+</span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </li>
             <li><a href="#industries">Industries</a></li>
             <li><a href="#features">Pourquoi Nous</a></li>
           </ul>
@@ -581,7 +749,33 @@ function MainLanding() {
         <div className={`mobile-menu-drawer ${mobileMenuOpen ? 'mobile-menu-open' : ''}`}>
           <ul className="mobile-nav-links">
             <li><a href="#accueil" onClick={() => setMobileMenuOpen(false)}>Accueil</a></li>
-            <li><a href="#services" onClick={() => setMobileMenuOpen(false)}>Services</a></li>
+            <li>
+              <button
+                type="button"
+                className="mobile-nav-link-btn"
+                onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                aria-expanded={mobileServicesOpen}
+              >
+                Services
+                <span className={`mobile-chevron ${mobileServicesOpen ? 'rotated' : ''}`}>▼</span>
+              </button>
+              <div className={`mobile-sub-services-wrapper ${mobileServicesOpen ? 'open' : ''}`}>
+                {servicesData.map((service, idx) => (
+                  <a
+                    href={getServicePath(service.title)}
+                    key={idx}
+                    className="mobile-sub-service-link"
+                    onClick={() => {
+                      setMobileServicesOpen(false);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <span className="mobile-sub-icon">{service.icon}</span>
+                    <span>{service.title}</span>
+                  </a>
+                ))}
+              </div>
+            </li>
             <li><a href="#industries" onClick={() => setMobileMenuOpen(false)}>Industries</a></li>
             <li><a href="#features" onClick={() => setMobileMenuOpen(false)}>Pourquoi Nous</a></li>
           </ul>
@@ -666,7 +860,12 @@ function MainLanding() {
 
         <div className="services-grid">
           {servicesData.map((service, index) => (
-            <div className={`service-card ${isServicesVisible ? 'anim-slide-up' : ''}`} key={index} style={{ animationDelay: `${0.4 + index * 0.1}s` }}>
+            <a
+              href={getServicePath(service.title)}
+              className={`service-card ${isServicesVisible ? 'anim-slide-up' : ''}`}
+              key={index}
+              style={{ animationDelay: `${0.4 + index * 0.1}s`, textDecoration: 'none', color: 'inherit' }}
+            >
               <div className="service-header">
                 <div className={`service-icon-wrapper ${service.iconClass}`}>
                   {service.icon}
@@ -675,7 +874,7 @@ function MainLanding() {
               </div>
               <h3 className="service-title">{service.title}</h3>
               <p className="service-desc">{service.desc}</p>
-            </div>
+            </a>
           ))}
         </div>
       </section>
@@ -794,69 +993,215 @@ function MainLanding() {
           </div>
 
           <div className={`industries-right ${isIndustriesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.4s' }}>
-            <CardSwap
-              cardDistance={windowWidth < 768 ? 30 : 60}
-              verticalDistance={windowWidth < 768 ? 40 : 70}
-              delay={3000}
-              pauseOnHover={false}
-              width={windowWidth < 480 ? 280 : windowWidth < 768 ? 400 : 550}
-              height={windowWidth < 480 ? 250 : windowWidth < 768 ? 350 : 500}
-            >
-              {industriesCarouselImages.map((ind, idx) => {
-                const icons = [
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>,
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>,
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
-                ];
-                return (
-                  <Card key={idx} style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: 0,
-                    background: '#000',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    overflow: 'hidden',
-                    width: '104%',
-                    height: '90%',
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.6)'
-                  }}>
-                    {/* Top Header */}
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '12px 16px',
-                      background: '#0d0d0d',
-                      borderBottom: '1px solid rgba(255,255,255,0.1)',
-                      gap: '10px'
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '30px',
+              padding: '20px 0'
+            }}>
+              {/* First row - 4 hexagons */}
+              <div style={{
+                display: 'flex',
+                gap: '8px',
+                justifyContent: 'center'
+              }}>
+                {industriesCarouselImages.slice(0, 4).map((ind, idx) => {
+                  const gradientColors = [
+                    'linear-gradient(135deg, #1AD8E8 0%, #15B8C7 100%)',
+                    'linear-gradient(135deg, #A364FF 0%, #8B5CF6 100%)',
+                    'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                    'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+                    'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+                    'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+                    'linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)',
+                    'linear-gradient(135deg, #EC4899 0%, #DB2777 100%)'
+                  ];
+                  const icons = [
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>,
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>,
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
+                  ];
+                  const hexSize = windowWidth < 768 ? 80 : windowWidth < 1024 ? 90 : 100;
+                  return (
+                    <div key={idx} style={{
+                      position: 'relative',
+                      width: hexSize,
+                      height: hexSize * 1.15,
+                      clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                      transition: 'transform 0.3s ease, filter 0.3s ease',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.15)';
+                      e.currentTarget.style.filter = 'brightness(1.3) saturate(1.2)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.filter = 'brightness(1) saturate(1)';
                     }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#e0e0e0' }}>
-                        {icons[idx % 3]}
-                      </div>
-                      <span style={{ color: '#e0e0e0', fontSize: '0.95rem', fontWeight: 500, letterSpacing: '0.3px' }}>
-                        {ind.alt}
-                      </span>
-                    </div>
-
-                    {/* Image Content */}
-                    <div style={{ flex: 1, position: 'relative', overflow: 'hidden', background: '#050505' }}>
-                      <img src={ind.src} alt={ind.alt} style={{
+                      <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover'
-                      }} />
+                        background: gradientColors[idx % gradientColors.length],
+                        boxShadow: `0 0 15px ${gradientColors[idx % gradientColors.length].match(/#[a-fA-F0-9]{6}/)[0]}88, 0 0 30px ${gradientColors[idx % gradientColors.length].match(/#[a-fA-F0-9]{6}/)[0]}44`,
+                        transition: 'box-shadow 0.3s ease'
+                      }}></div>
+                      
+                      <div style={{
+                        position: 'absolute',
+                        top: '-50%',
+                        left: '-50%',
+                        width: '200%',
+                        height: '200%',
+                        background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
+                        animation: 'pulseCard 2s ease-in-out infinite'
+                      }}></div>
+                      
+                      <div style={{
+                        position: 'relative',
+                        zIndex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                        padding: '12px'
+                      }}>
+                        <div style={{ 
+                          marginBottom: '8px',
+                          color: 'rgba(255,255,255,1)',
+                          filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
+                        }}>
+                          {icons[idx % 3]}
+                        </div>
+                        
+                        <h3 style={{ 
+                          color: '#fff',
+                          fontSize: windowWidth < 768 ? '0.65rem' : '0.75rem',
+                          fontWeight: 600,
+                          margin: 0,
+                          textAlign: 'center',
+                          textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4)',
+                          letterSpacing: '0.2px',
+                          lineHeight: 1.1
+                        }}>
+                          {ind.alt}
+                        </h3>
+                      </div>
                     </div>
-                  </Card>
-                );
-              })}
-            </CardSwap>
+                  );
+                })}
+              </div>
+              
+              {/* Second row - 4 hexagons (offset) */}
+              <div style={{
+                display: 'flex',
+                gap: '8px',
+                justifyContent: 'center',
+                paddingLeft: windowWidth < 768 ? '40px' : windowWidth < 1024 ? '45px' : '50px'
+              }}>
+                {industriesCarouselImages.slice(4, 8).map((ind, idx) => {
+                  const gradientColors = [
+                    'linear-gradient(135deg, #1AD8E8 0%, #15B8C7 100%)',
+                    'linear-gradient(135deg, #A364FF 0%, #8B5CF6 100%)',
+                    'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                    'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+                    'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+                    'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+                    'linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)',
+                    'linear-gradient(135deg, #EC4899 0%, #DB2777 100%)'
+                  ];
+                  const icons = [
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>,
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>,
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
+                  ];
+                  const hexSize = windowWidth < 768 ? 80 : windowWidth < 1024 ? 90 : 100;
+                  return (
+                    <div key={idx + 4} style={{
+                      position: 'relative',
+                      width: hexSize,
+                      height: hexSize * 1.15,
+                      clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
+                      transition: 'transform 0.3s ease, filter 0.3s ease',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.15)';
+                      e.currentTarget.style.filter = 'brightness(1.3) saturate(1.2)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.filter = 'brightness(1) saturate(1)';
+                    }}>
+                      <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: gradientColors[(idx + 4) % gradientColors.length],
+                        boxShadow: `0 0 15px ${gradientColors[(idx + 4) % gradientColors.length].match(/#[a-fA-F0-9]{6}/)[0]}88, 0 0 30px ${gradientColors[(idx + 4) % gradientColors.length].match(/#[a-fA-F0-9]{6}/)[0]}44`,
+                        transition: 'box-shadow 0.3s ease'
+                      }}></div>
+                      
+                      <div style={{
+                        position: 'absolute',
+                        top: '-50%',
+                        left: '-50%',
+                        width: '200%',
+                        height: '200%',
+                        background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
+                        animation: 'pulseCard 2s ease-in-out infinite'
+                      }}></div>
+                      
+                      <div style={{
+                        position: 'relative',
+                        zIndex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                        padding: '12px'
+                      }}>
+                        <div style={{ 
+                          marginBottom: '8px',
+                          color: 'rgba(255,255,255,1)',
+                          filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
+                        }}>
+                          {icons[(idx + 4) % 3]}
+                        </div>
+                        
+                        <h3 style={{ 
+                          color: '#fff',
+                          fontSize: windowWidth < 768 ? '0.65rem' : '0.75rem',
+                          fontWeight: 600,
+                          margin: 0,
+                          textAlign: 'center',
+                          textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4)',
+                          letterSpacing: '0.2px',
+                          lineHeight: 1.1
+                        }}>
+                          {ind.alt}
+                        </h3>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
       <section className="testimonials-section chat-layout-section" ref={testimonialsRef}>
-        
+
         <div className={`chat-layout-grid ${isTestimonialsVisible ? 'is-visible' : ''}`}>
           {/* Left Column: Chat Bubbles */}
           <div className="chat-bubbles-column">
@@ -915,7 +1260,7 @@ function MainLanding() {
             <h2 className={`features-main-title ${isFeaturesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.1s' }}>
               Pourquoi nous <br />choisir ?
             </h2>
-            
+
             <div className={`features-mission-vision ${isFeaturesVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.2s' }}>
               <div className="mv-block">
                 <h4>Notre Mission</h4>
@@ -966,8 +1311,8 @@ function MainLanding() {
               glow: 'rgba(163,100,255,0.12)',
               icon: (
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="3"/>
-                  <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                  <circle cx="12" cy="12" r="3" />
+                  <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
                 </svg>
               ),
             },
@@ -979,8 +1324,8 @@ function MainLanding() {
               glow: 'rgba(26,216,232,0.12)',
               icon: (
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                  <path d="M9 12l2 2 4-4"/>
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  <path d="M9 12l2 2 4-4" />
                 </svg>
               ),
             },
@@ -992,7 +1337,7 @@ function MainLanding() {
               glow: 'rgba(245,158,11,0.12)',
               icon: (
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                 </svg>
               ),
             },
@@ -1004,8 +1349,8 @@ function MainLanding() {
               glow: 'rgba(16,185,129,0.12)',
               icon: (
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
                 </svg>
               ),
             },
@@ -1017,7 +1362,7 @@ function MainLanding() {
               glow: 'rgba(59,130,246,0.12)',
               icon: (
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                 </svg>
               ),
             },
@@ -1029,10 +1374,10 @@ function MainLanding() {
               glow: 'rgba(244,114,182,0.12)',
               icon: (
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                  <circle cx="9" cy="7" r="4"/>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
               ),
             },
@@ -1079,10 +1424,10 @@ function MainLanding() {
             <div className="approach-steps-vertical">
               {approachSteps.map((step, index) => (
                 <div className={`approach-vertical-item ${isApproachVisible ? 'anim-slide-up' : ''}`} key={step.number} style={{ animationDelay: `${0.3 + index * 0.1}s` }}>
-                  <div className="approach-icon-circle" style={{ 
-                    background: index % 3 === 0 ? 'linear-gradient(135deg, #4F46E5, #3B82F6)' : 
-                               index % 3 === 1 ? 'linear-gradient(135deg, #06B6D4, #0891B2)' : 
-                               'linear-gradient(135deg, #8B5CF6, #7C3AED)'
+                  <div className="approach-icon-circle" style={{
+                    background: index % 3 === 0 ? 'linear-gradient(135deg, #4F46E5, #3B82F6)' :
+                      index % 3 === 1 ? 'linear-gradient(135deg, #06B6D4, #0891B2)' :
+                        'linear-gradient(135deg, #8B5CF6, #7C3AED)'
                   }}>
                     {step.number}
                   </div>
@@ -1103,7 +1448,7 @@ function MainLanding() {
             {
               icon: (
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" />
                 </svg>
               ),
               color: '#A364FF',
@@ -1115,7 +1460,7 @@ function MainLanding() {
             {
               icon: (
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                 </svg>
               ),
               color: '#1AD8E8',
@@ -1127,7 +1472,7 @@ function MainLanding() {
             {
               icon: (
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                 </svg>
               ),
               color: '#F59E0B',
@@ -1139,9 +1484,9 @@ function MainLanding() {
             {
               icon: (
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
-                  <line x1="18" y1="8" x2="23" y2="8"/><line x1="20" y1="5" x2="23" y2="3"/>
-                  <line x1="20" y1="11" x2="23" y2="13"/>
+                  <circle cx="12" cy="8" r="4" /><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+                  <line x1="18" y1="8" x2="23" y2="8" /><line x1="20" y1="5" x2="23" y2="3" />
+                  <line x1="20" y1="11" x2="23" y2="13" />
                 </svg>
               ),
               color: '#10B981',
@@ -1156,7 +1501,7 @@ function MainLanding() {
               className={`approach-adv-card ${isApproachVisible ? 'anim-slide-up' : ''}`}
               style={{ animationDelay: adv.delay }}
             >
-              <div className="approach-adv-icon" style={{ color: adv.color, background: `${adv.glow}`.replace('0.35','0.12'), boxShadow: `0 0 24px ${adv.glow}` }}>
+              <div className="approach-adv-icon" style={{ color: adv.color, background: `${adv.glow}`.replace('0.35', '0.12'), boxShadow: `0 0 24px ${adv.glow}` }}>
                 {adv.icon}
               </div>
               <h3 className="approach-adv-title" style={{ color: adv.color }}>{adv.title}</h3>
@@ -1294,9 +1639,9 @@ function MainLanding() {
             Contactez-nous aujourd'hui pour une consultation gratuite.
           </p>
           <div className={`cta-btn-row ${isCtaVisible ? 'anim-slide-up' : ''}`} style={{ animationDelay: '0.45s', display: 'flex', justifyContent: 'center' }}>
-            <Link 
-              to="/contact" 
-              className="cta-contact-btn" 
+            <Link
+              to="/contact"
+              className="cta-contact-btn"
               onClick={() => window.scrollTo(0, 0)}
               style={{
                 display: 'inline-flex',
@@ -1384,8 +1729,8 @@ function MainLanding() {
             <div className="footer-col">
               <h4 className="footer-col-title">Get in touch</h4>
               <ul className="footer-menu">
-                <li><a href="mailto:contact@givenxtech.com">contact@givenxtech.com</a></li>
-                <li><a href="tel:+212635166074">+212 635 166 074</a></li>
+                <li><a href="mailto:contact@givenxtechnology.com">contact@givenxtechnology.com</a></li>
+                <li><a href="tel:0608692108">0608692108</a></li>
                 <li><span className="footer-text">Casablanca, Maroc</span></li>
               </ul>
             </div>
@@ -1394,7 +1739,7 @@ function MainLanding() {
             <div className="footer-col" style={{ padding: '0', display: 'flex', flexDirection: 'column' }}>
               {isSuccess ? (
                 <div style={{ textAlign: 'center', padding: '1.5rem 0', border: '1px dashed rgba(26, 216, 232, 0.5)', borderRadius: '8px', background: 'rgba(26, 216, 232, 0.05)' }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1AD8E8" strokeWidth="2" style={{ margin: '0 auto 0.5rem', display: 'block' }}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1AD8E8" strokeWidth="2" style={{ margin: '0 auto 0.5rem', display: 'block' }}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" /></svg>
                   <p style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600, margin: '0 0 0.25rem' }}>Message envoyé</p>
                   <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem', margin: 0 }}>Nous vous recontacterons vite.</p>
                 </div>
@@ -1404,45 +1749,45 @@ function MainLanding() {
                     <span style={{ width: '6px', height: '6px', background: '#1AD8E8', borderRadius: '50%', display: 'inline-block', boxShadow: '0 0 8px #1AD8E8' }}></span>
                     Démarrer un projet
                   </h4>
-                  <input 
-                     type="text" 
-                     placeholder="Nom complet" 
-                     required 
-                     value={formData.name}
-                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                     style={{ width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
+                  <input
+                    type="text"
+                    placeholder="Nom complet"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    style={{ width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
                   />
-                  <input 
-                    type="email" 
-                    placeholder="Email professionnel" 
-                    required 
+                  <input
+                    type="email"
+                    placeholder="Email professionnel"
+                    required
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     style={{ width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
                   />
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <input 
-                      type="text" 
-                      placeholder="Société" 
-                      required 
+                    <input
+                      type="text"
+                      placeholder="Société"
+                      required
                       value={formData.company}
-                      onChange={(e) => setFormData({...formData, company: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       style={{ flex: 1, width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
                     />
-                    <input 
-                      type="text" 
-                      placeholder="Secteur" 
-                      required 
+                    <input
+                      type="text"
+                      placeholder="Secteur"
+                      required
                       value={formData.sector}
-                      onChange={(e) => setFormData({...formData, sector: e.target.value})}
+                      onChange={(e) => setFormData({ ...formData, sector: e.target.value })}
                       style={{ flex: 1, width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
                     />
                   </div>
-                  <textarea 
-                    placeholder="Votre message..." 
+                  <textarea
+                    placeholder="Votre message..."
                     required
                     value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     style={{ width: '100%', padding: '0.5rem 0.8rem', background: 'rgba(255,255,255,0.03)', border: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.8rem', minHeight: '60px', resize: 'none', outline: 'none' }}
                   ></textarea>
                   <button type="submit" className="footer-form-btn" disabled={isSubmitting} style={{ alignSelf: 'flex-end', padding: '0.5rem 1.2rem', background: 'transparent', color: '#1AD8E8', border: '1px solid rgba(26, 216, 232, 0.5)', borderRadius: '50px', fontWeight: '500', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.5rem', transition: 'all 0.3s ease' }}>
@@ -1473,52 +1818,60 @@ function MainLanding() {
       {isReviewOpen && (
         <div className="modal-overlay form-animation-overlay" onClick={() => setIsReviewOpen(false)}>
           <div className="modal-content form-animation-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setIsReviewOpen(false)}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <button className="modal-close" onClick={() => setIsReviewOpen(false)} aria-label="Fermer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
-            <h3 className="modal-title">Ajouter un avis</h3>
-            <form onSubmit={handleReviewSubmit} className="contact-form" style={{ marginTop: '1.5rem' }}>
+            <h3 className="modal-title">
+              <span className="modal-title-icon">✦</span>
+              Ajouter un avis
+            </h3>
+            <p className="modal-subtitle">Partagez votre expérience avec GivenX Tech</p>
+            
+            <form onSubmit={handleReviewSubmit} className="contact-form">
               <div className="form-group">
                 <label className="form-label">Nom complet</label>
-                <input type="text" className="form-input" required value={newReview.name} onChange={(e) => setNewReview({ ...newReview, name: e.target.value })} placeholder="John Doe" />
+                <input type="text" className="form-input" required value={newReview.name} onChange={(e) => setNewReview({ ...newReview, name: e.target.value })} placeholder="Ex: Omar Lahmouni" />
               </div>
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">Rôle</label>
-                  <input type="text" className="form-input" required value={newReview.role} onChange={(e) => setNewReview({ ...newReview, role: e.target.value })} placeholder="CEO" />
+                  <input type="text" className="form-input" required value={newReview.role} onChange={(e) => setNewReview({ ...newReview, role: e.target.value })} placeholder="Ex: Fondateur" />
                 </div>
                 <div className="form-group">
                   <label className="form-label">Entreprise</label>
-                  <input type="text" className="form-input" required value={newReview.company} onChange={(e) => setNewReview({ ...newReview, company: e.target.value })} placeholder="Company Inc." />
-                </div>
-              </div>
-              <div className="form-group" style={{ marginBottom: '1rem' }}>
-                <label className="form-label">Note</label>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <svg
-                      key={star}
-                      onClick={() => setNewReview({ ...newReview, rating: star })}
-                      style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
-                      onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
-                      onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                      fill={star <= newReview.rating ? "#1AD8E8" : "none"}
-                      stroke={star <= newReview.rating ? "#1AD8E8" : "rgba(255,255,255,0.3)"}
-                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                    >
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                  ))}
+                  <input type="text" className="form-input" required value={newReview.company} onChange={(e) => setNewReview({ ...newReview, company: e.target.value })} placeholder="Ex: GivenX" />
                 </div>
               </div>
               <div className="form-group">
-                <label className="form-label">Avis</label>
-                <textarea className="form-textarea" required value={newReview.text} onChange={(e) => setNewReview({ ...newReview, text: e.target.value })} placeholder="Votre avis..."></textarea>
+                <label className="form-label">Note globale</label>
+                <div className="rating-stars-wrapper">
+                  <div className="rating-stars-list">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <svg
+                        key={star}
+                        onClick={() => setNewReview({ ...newReview, rating: star })}
+                        style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
+                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.25)'}
+                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                        fill={star <= newReview.rating ? "#1AD8E8" : "none"}
+                        stroke={star <= newReview.rating ? "#1AD8E8" : "rgba(255,255,255,0.3)"}
+                        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                      >
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                      </svg>
+                    ))}
+                  </div>
+                  <span className="rating-label-val">{newReview.rating} / 5 étoiles</span>
+                </div>
               </div>
-              <button type="submit" className="btn-submit" style={{ width: '100%' }}>
-                Ajouter l'avis
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '8px' }}><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <div className="form-group">
+                <label className="form-label">Votre avis</label>
+                <textarea className="form-textarea" required value={newReview.text} onChange={(e) => setNewReview({ ...newReview, text: e.target.value })} placeholder="Racontez votre expérience..."></textarea>
+              </div>
+              <button type="submit" className="btn-submit">
+                Publier l'avis
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </button>
             </form>
           </div>
@@ -1568,6 +1921,12 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/tech-audit" element={<TechAuditPage />} />
+        <Route path="/ingenierie-logicielle" element={<SoftwareEngineeringPage />} />
+        <Route path="/automatisation" element={<AutomationPage />} />
+        <Route path="/cloud-devops" element={<CloudDevOpsPage />} />
+        <Route path="/ia-data" element={<IADataPage />} />
+        <Route path="/cybersecurite" element={<CyberSecurityPage />} />
         <Route path="/" element={<MainLanding />} />
         <Route path="/contact" element={<ContactPage />} />
       </Routes>
